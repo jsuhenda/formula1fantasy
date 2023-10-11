@@ -57,15 +57,4 @@ public class Team {
         }
         return totalCost;
     }
-
-    @Override
-    // This method is to make console output the team name instead of the address.
-    // EFFECTS : returns a string of team name and team value
-    public String toString() {
-        StringBuilder driverInfo = new StringBuilder("Drivers in Team " + name + ":\n");
-        for (Driver driver : drivers) {
-            driverInfo.append(driver.getName()).append("\n");
-        }
-        return driverInfo.toString();
-    }
 }

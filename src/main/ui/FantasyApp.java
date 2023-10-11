@@ -29,7 +29,7 @@ public class FantasyApp {
             System.out.println("2 - Create a team");
             System.out.println("3 - View created leagues");
             System.out.println("4 - View created teams");
-            System.out.println("5 - View drivers");
+            System.out.println("5 - View created teams' drivers");
             System.out.println("6 - Exit");
 
             int choice = scanner.nextInt();

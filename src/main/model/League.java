@@ -38,11 +38,4 @@ public class League {
     public void removeTeam(Team t) {
         league.remove(t);
     }
-
-    @Override
-    // This method is to make console output the league name instead of the address.
-    // EFFECTS : returns a string of league name
-    public String toString() {
-        return "League name: " + league;
-    }
 }
