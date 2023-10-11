@@ -5,8 +5,8 @@ import java.util.List;
 
 // The class League represents a Formula 1 fantasy league. The league can contain an arbitrary amount of teams.
 public class League {
-    private String name;
-    private List<Team> league;
+    private final String name;
+    private final List<Team> league;
 
     public League(String name) {
         this.name = name;
@@ -39,9 +39,9 @@ public class League {
         league.remove(t);
     }
 
-    // This method is to make console output the team name instead of the address.
-    // EFFECTS : returns a string of league name
     @Override
+    // This method is to make console output the league name instead of the address.
+    // EFFECTS : returns a string of league name
     public String toString() {
         return "League name: " + league;
     }

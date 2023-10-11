@@ -24,8 +24,8 @@ public class Driver {
     public static final Driver d19 = new Driver("Kevin Magnussen", 5.5);
     public static final Driver d20 = new Driver("Nico Hulkenberg", 6.7);
 
-    private String name;
-    private double value; //The cost to recruit the driver
+    private final String name;
+    private final double value; //The cost to recruit the driver
 
     public Driver(String name, double value) {
         this.name = name;
@@ -40,9 +40,9 @@ public class Driver {
         return value;
     }
 
-    // This method is to make console output the team name instead of the address.
-    // EFFECTS : returns a string of driver name and value
     @Override
+    // This method is to make console output the driver name instead of the address.
+    // EFFECTS : returns a string of driver name and value
     public String toString() {
         return "Driver name: " + name + "\nValue: " + value;
     }

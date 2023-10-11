@@ -8,8 +8,8 @@ import java.util.List;
 // must not exceed a maximum cost cap of $100m. The class provides methods for managing the team and
 // calculating the total value of the team.
 public class Team {
-    private String name;
-    private List<Driver> drivers;
+    private final String name;
+    private final List<Driver> drivers;
     private static final double MAX_COST_CAP = 100.0;
     private static final int MAX_DRIVERS = 5;
 
@@ -58,9 +58,9 @@ public class Team {
         return totalCost;
     }
 
+    @Override
     // This method is to make console output the team name instead of the address.
     // EFFECTS : returns a string of team name and team value
-    @Override
     public String toString() {
         return "\nTeam Name: " + name + "\nTeam Value: $" + calculateTotalCost();
     }
