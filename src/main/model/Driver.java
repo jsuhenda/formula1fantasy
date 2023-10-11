@@ -22,7 +22,7 @@ public class Driver {
     public static final Driver d17 = new Driver("Valtteri Bottas", 7.6);
     public static final Driver d18 = new Driver("Zhou Guanyu", 5.5);
     public static final Driver d19 = new Driver("Kevin Magnussen", 5.5);
-    public static final Driver d20 = new Driver("Nico Hülkenberg", 6.7);
+    public static final Driver d20 = new Driver("Nico Hulkenberg", 6.7);
 
     private String name;
     private double value; //The cost to recruit the driver
