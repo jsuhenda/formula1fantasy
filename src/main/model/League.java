@@ -6,11 +6,11 @@ import java.util.List;
 // The class League represents a Formula 1 fantasy league. The league can contain an arbitrary amount of teams.
 public class League {
     private String name;
-    private List<Team> teams;
+    private List<Team> league;
 
     public League(String name) {
         this.name = name;
-        this.teams = new ArrayList<>();
+        this.league = new ArrayList<>();
     }
 
     public String getName() {
@@ -18,12 +18,25 @@ public class League {
     }
 
     public List<Team> getTeams() {
-        return teams;
+        return league;
     }
 
+    // REQUIRES : the team is not already in the league
     // MODIFIES : this
     // EFFECTS  : adds a team to the league
     public void addTeam(Team t) {
-        teams.add(t);
+        if (!league.contains(t)) {
+            league.add(t);
+        }
+    }
+
+    // MODIFIES : this
+    // EFFECTS : removes a team from the league
+    public void removeTeam(Team t) {
+        league.remove(t);
+    }
+
+    public String toString() {
+        return "League name: " + league;
     }
 }

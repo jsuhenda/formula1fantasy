@@ -1,1 +1,1 @@
-**NOTE:** any data files used by your project, including those used by model.test classes, must be added to this directory.
+**NOTE:** any data files used by your project, including those used by model.model.test classes, must be added to this directory.
