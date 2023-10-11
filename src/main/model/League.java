@@ -24,9 +24,12 @@ public class League {
     // REQUIRES : the team is not already in the league
     // MODIFIES : this
     // EFFECTS  : adds a team to the league
-    public void addTeam(Team t) {
+    public boolean addTeam(Team t) {
         if (!league.contains(t)) {
             league.add(t);
+            return true;
+        } else {
+            return false;
         }
     }
 
@@ -36,6 +39,9 @@ public class League {
         league.remove(t);
     }
 
+    // This method is to make console output the team name instead of the address.
+    // EFFECTS : returns a string of league name
+    @Override
     public String toString() {
         return "League name: " + league;
     }

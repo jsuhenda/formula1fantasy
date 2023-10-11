@@ -58,11 +58,8 @@ public class Team {
         return totalCost;
     }
 
-    public void setDrivers(List<Driver> drivers) {
-        this.drivers = drivers;
-    }
-
     // This method is to make console output the team name instead of the address.
+    // EFFECTS : returns a string of team name and team value
     @Override
     public String toString() {
         return "\nTeam Name: " + name + "\nTeam Value: $" + calculateTotalCost();

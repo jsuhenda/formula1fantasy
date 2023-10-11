@@ -21,7 +21,7 @@ but I like to think of this personal project as baby steps to who knows? perhaps
 
 ## User Stories:
 
-- As a user, I want to be able to create a new F1 team and add it to a list of F1 teams ( a league)
+- As a user, I want to be able to create a new F1 team and add it to a list of F1 teams (a league)
 - As a user, I want to be able to select an F1 team and add a new driver to the team or remove an existing driver from the team
 - As a user, I want to be able to select a team and view a list of drivers on that team
 - As a user, I want to be able to select a driver on a team and add a new statistic for that driver, for example, the number of career victories

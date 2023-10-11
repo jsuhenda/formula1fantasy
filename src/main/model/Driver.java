@@ -40,6 +40,8 @@ public class Driver {
         return value;
     }
 
+    // This method is to make console output the team name instead of the address.
+    // EFFECTS : returns a string of driver name and value
     @Override
     public String toString() {
         return "Driver name: " + name + "\nValue: " + value;

@@ -86,6 +86,25 @@ public class TeamTest {
     }
 
     @Test
+    void testAdd5DriversOverMax() {
+        testTeam.addDriver(Driver.d2);
+        testTeam.addDriver(Driver.d4);
+        testTeam.addDriver(Driver.d5);
+        testTeam.addDriver(Driver.d6);
+        testTeam.addDriver(Driver.d9);
+
+        assertTrue(testTeam.getDrivers().contains(Driver.d2));
+        assertTrue(testTeam.getDrivers().contains(Driver.d4));
+        assertTrue(testTeam.getDrivers().contains(Driver.d5));
+        assertTrue(testTeam.getDrivers().contains(Driver.d6));
+        assertTrue(testTeam.getDrivers().contains(Driver.d9));
+        assertFalse(testTeam.addDriver(Driver.d18));
+        assertEquals("My Team", testTeam.getName());
+        assertEquals(5, testTeam.getDrivers().size());
+        assertEquals(99.1, testTeam.calculateTotalCost());
+    }
+
+    @Test
     void testAddExistingDriverFail() {
         boolean success1 = teamMcl.addDriver(Driver.d7);
         boolean fail1 = teamMcl.addDriver(Driver.d8);
