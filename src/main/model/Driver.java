@@ -44,7 +44,7 @@ public class Driver {
     // This method is to make console output the driver name instead of the address.
     // EFFECTS : returns a string of driver name and value
     public String toString() {
-        return "Driver name: " + name + "\nValue: " + value;
+        return "Driver name: " + name + "\nValue: " + value + " million dollars";
     }
 
 }
