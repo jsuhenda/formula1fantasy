@@ -10,7 +10,6 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 
 public class LeagueTest {
     private League f1League;
-    private League testLeague;
     private Team team1;
     private Team team2;
     private Team team3;
@@ -18,11 +17,9 @@ public class LeagueTest {
     @BeforeEach
     void runBefore() {
         f1League = new League("Formula One Fantasy League");
-        testLeague = new League("My League");
         team1 = new Team("Scuderia Ferrari");
         team2 = new Team("Red Bull Racing");
         team3 = new Team("Mercedes AMG Formula One Team");
-        testLeague.addTeam(team1);
 
     }
     @Test
@@ -39,14 +36,16 @@ public class LeagueTest {
     }
 
     @Test
-    void testAddMultipleTeams() {
-        assertFalse(f1League.addTeam(team1));
-        assertEquals("Scuderia Ferrari", f1League.getTeams().get(0).getName());
-        assertEquals(1, f1League.getTeams().size());
+    void testAddExistingTeam() {
+        League testLeague = new League("My League");
+        testLeague.addTeam(team1);
+        assertFalse(testLeague.addTeam(team1));
+        assertEquals("Scuderia Ferrari", testLeague.getTeams().get(0).getName());
+        assertEquals(1, testLeague.getTeams().size());
     }
 
     @Test
-    void testAddExistingTeam() {
+    void testAddMultipleTeams() {
         f1League.addTeam(team1);
         f1League.addTeam(team2);
         f1League.addTeam(team3);
