@@ -87,22 +87,22 @@ public class TeamTest {
 
     @Test
     void testAdd5DriversOverMax() {
-        testTeam.addDriver(Driver.d2);
-        testTeam.addDriver(Driver.d4);
-        testTeam.addDriver(Driver.d5);
-        testTeam.addDriver(Driver.d6);
-        testTeam.addDriver(Driver.d9);
-        testTeam.addDriver(Driver.d18);
+        testTeam.addDriver(Driver.d1);
+        testTeam.addDriver(Driver.d11);
+        testTeam.addDriver(Driver.d12);
+        testTeam.addDriver(Driver.d13);
+        testTeam.addDriver(Driver.d14);
+        testTeam.addDriver(Driver.d15); // Adding a sixth driver should fail due to exceeding the driver limit
 
-        assertTrue(testTeam.getDrivers().contains(Driver.d2));
-        assertTrue(testTeam.getDrivers().contains(Driver.d4));
-        assertTrue(testTeam.getDrivers().contains(Driver.d5));
-        assertTrue(testTeam.getDrivers().contains(Driver.d6));
-        assertTrue(testTeam.getDrivers().contains(Driver.d9));
-        assertFalse(testTeam.getDrivers().contains(Driver.d18));
+        assertTrue(testTeam.getDrivers().contains(Driver.d1));
+        assertTrue(testTeam.getDrivers().contains(Driver.d11));
+        assertTrue(testTeam.getDrivers().contains(Driver.d12));
+        assertTrue(testTeam.getDrivers().contains(Driver.d13));
+        assertTrue(testTeam.getDrivers().contains(Driver.d14));
+        assertFalse(testTeam.getDrivers().contains(Driver.d15));
         assertEquals("My Team", testTeam.getName());
         assertEquals(5, testTeam.getDrivers().size());
-        assertEquals(99.1, testTeam.calculateTotalCost());
+        assertEquals(70.3, testTeam.calculateTotalCost());
     }
 
     @Test

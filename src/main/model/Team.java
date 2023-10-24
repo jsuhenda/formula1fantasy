@@ -30,7 +30,7 @@ public class Team {
     public boolean addDriver(Driver driver) {
         double currentValue = calculateTotalCost();
         if (currentValue + driver.getValue() <= MAX_COST_CAP
-                && drivers.size() <= MAX_DRIVERS
+                && drivers.size() < MAX_DRIVERS
                 && (!drivers.contains(driver))) {
             drivers.add(driver);
             return true; // Driver added successfully
