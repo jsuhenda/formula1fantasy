@@ -13,6 +13,7 @@ public class Team {
     private static final double MAX_COST_CAP = 100.0;
     private static final int MAX_DRIVERS = 5;
 
+    // EFFECTS : constructs a team that contains a list of drivers
     public Team(String name) {
         this.name = name;
         this.drivers = new ArrayList<>();
@@ -29,7 +30,7 @@ public class Team {
     public boolean addDriver(Driver driver) {
         double currentValue = calculateTotalCost();
         if (currentValue + driver.getValue() <= MAX_COST_CAP
-                && drivers.size() < MAX_DRIVERS
+                && drivers.size() <= MAX_DRIVERS
                 && (!drivers.contains(driver))) {
             drivers.add(driver);
             return true; // Driver added successfully

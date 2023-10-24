@@ -27,9 +27,9 @@ public class FantasyApp {
         while (true) {
             System.out.println("1 - Create a league");
             System.out.println("2 - Create a team");
-            System.out.println("3 - View created leagues");
-            System.out.println("4 - View created teams");
-            System.out.println("5 - View created teams' drivers");
+            System.out.println("3 - View your created leagues");
+            System.out.println("4 - View your created teams and add drivers");
+            System.out.println("5 - View your created teams' drivers");
             System.out.println("6 - Exit");
 
             int choice = scanner.nextInt();

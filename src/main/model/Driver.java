@@ -27,6 +27,7 @@ public class Driver {
     private final String name;
     private final double value; //The cost to recruit the driver
 
+    // EFFECTS : constructs a driver of given name and value
     public Driver(String name, double value) {
         this.name = name;
         this.value = value;

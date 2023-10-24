@@ -8,6 +8,7 @@ public class League {
     private final String name;
     private final List<Team> league;
 
+    // EFFECTS : constructs a league that contains a list of teams
     public League(String name) {
         this.name = name;
         this.league = new ArrayList<>();
