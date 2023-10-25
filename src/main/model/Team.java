@@ -1,5 +1,6 @@
 package model;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 import persistence.Writable;
 
@@ -62,11 +63,26 @@ public class Team implements Writable {
         return totalCost;
     }
 
+    public String toString() {
+        return "Team: " + name + "\nDrivers: " + drivers + "Total Value: " + calculateTotalCost();
+    }
+
     @Override
     public JSONObject toJson() {
         JSONObject json = new JSONObject();
         json.put("name", name);
-        json.put("drivers", drivers);
+        json.put("drivers", driversToJson());
         return json;
+    }
+
+    private JSONArray driversToJson() {
+        JSONArray jsonArray = new JSONArray();
+        for (Driver d : drivers) {
+            JSONObject driverJson = new JSONObject();
+            driverJson.put("name", d.getName());
+            driverJson.put("value", d.getValue());
+            jsonArray.put(driverJson);
+        }
+        return jsonArray;
     }
 }

@@ -1,8 +1,11 @@
 package model;
 
+import org.json.JSONObject;
+import persistence.Writable;
+
 // The class driver represents the drivers in a team. Drivers have a price to recruit to the team.
 // The driver's value is in millions of dollars.
-public class Driver {
+public class Driver implements Writable {
     public static final Driver d1 = new Driver("Max Verstappen", 32.8);
     public static final Driver d2 = new Driver("Sergio Perez", 20.4);
     public static final Driver d3 = new Driver("Lewis Hamilton", 30.0);
@@ -39,6 +42,19 @@ public class Driver {
 
     public double getValue() {
         return value;
+    }
+
+    @Override
+    public String toString() {
+        return "Driver: " + name + "\nValue: $" + value + " million";
+    }
+
+    // EFFECTS: returns this Driver as a JSON object
+    public JSONObject toJson() {
+        JSONObject json = new JSONObject();
+        json.put("name", name);
+        json.put("value", value);
+        return json;
     }
 
 }

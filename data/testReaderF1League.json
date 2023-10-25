@@ -1,11 +1,31 @@
 {
-    "league": [
+  "name": "F1 Fantasy",
+  "teams": [
+    {
+      "name": "Team A",
+      "drivers": [
         {
-            "name": "McLaren"
+          "name": "Max Verstappen",
+          "value": 32.8
         },
         {
-            "name": "Ferrari"
+          "name": "Lewis Hamilton",
+          "value": 30.0
         }
-    ],
-    "name": "My league"
+      ]
+    },
+    {
+      "name": "Team B",
+      "drivers": [
+        {
+          "name": "Charles Leclerc",
+          "value": 23.3
+        },
+        {
+          "name": "Lando Norris",
+          "value": 16.7
+        }
+      ]
+    }
+  ]
 }

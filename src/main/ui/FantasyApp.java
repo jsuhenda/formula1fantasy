@@ -19,7 +19,7 @@ public class FantasyApp {
     private League league;
     private JsonWriter jsonWriter;
     private JsonReader jsonReader;
-    private List<League> leagues;
+//    private List<League> leagues;
     private List<Team> teams;
 
     // EFFECTS : constructs the fantasy and runs application
@@ -32,10 +32,9 @@ public class FantasyApp {
     }
 
 
-
     @SuppressWarnings("methodlength")
     public void runFantasy() {
-        leagues = new ArrayList<>();
+//        leagues = new ArrayList<>();
         teams = new ArrayList<>();
 
         while (true) {
@@ -45,10 +44,10 @@ public class FantasyApp {
 
             switch (choice) {
                 case 1:
-                    createLeague();
+                    createTeam();
                     break;
                 case 2:
-                    createTeam();
+                    printTeams();
                     break;
                 case 3:
                     addTeamsToLeague();
@@ -83,9 +82,9 @@ public class FantasyApp {
 
     // EFFECTS: displays menu of options to user
     private void displayMenu() {
-        System.out.println("1 - Create a league");
-        System.out.println("2 - Create a team");
-        System.out.println("3 - View your created leagues");
+        System.out.println("1 - Create a team");
+        System.out.println("2 - Print teams");
+        System.out.println("3 - Add team to league");
         System.out.println("4 - Add drivers to your created teams");
         System.out.println("5 - View your created teams' drivers");
         System.out.println("6 - Save league to file");
@@ -93,15 +92,15 @@ public class FantasyApp {
         System.out.println("8 - Exit");
     }
 
-    // EFFECTS: creates a new league with name
-    private void createLeague() {
-        System.out.println("Enter the name of the league: ");
-        input.nextLine();  // Consume the newline character
-        String leagueName = input.nextLine();  // Read the league name
-        League newLeague = new League(leagueName);
-        leagues.add(newLeague);
-        System.out.println("League created: " + newLeague.getName());
-    }
+//    // EFFECTS: creates a new league with name
+//    private void createLeague() {
+//        System.out.println("Enter the name of the league: ");
+//        input.nextLine();  // Consume the newline character
+//        String leagueName = input.nextLine();  // Read the league name
+//        League newLeague = new League(leagueName);
+//        leagues.add(newLeague);
+//        System.out.println("League created: " + newLeague.getName());
+//    }
 
     // EFFECTS: creates a new team with name
     private void createTeam() {
@@ -113,46 +112,62 @@ public class FantasyApp {
         System.out.println("Team created: " + newTeam.getName());
     }
 
+    private void printTeams() {
+        System.out.println("List of created teams:");
+        List<Team> teams = league.getTeams(); // Use the teams from the loaded league
+        for (int i = 0; i < teams.size(); i++) {
+            Team team = teams.get(i);
+            System.out.println(i + ". " + team.getName());
+            List<Driver> driversInTeam = team.getDrivers();
+
+            System.out.println("Drivers in " + team.getName() + ":");
+            for (Driver driver : driversInTeam) {
+                System.out.println("\t" + driver.getName() + " (Value: $" + driver.getValue() + " million)");
+            }
+        }
+    }
+
     @SuppressWarnings("methodlength")
     // EFFECTS : add created teams to created leagues
     private void addTeamsToLeague() {
-        System.out.println("List of created leagues:");
-        for (int i = 0; i < leagues.size(); i++) {
-            League league = leagues.get(i);
-            System.out.println(i + ". " + league.getName());
-        }
+//        System.out.println("List of created leagues:");
+//        for (int i = 0; i < leagues.size(); i++) {
+//            League league = leagues.get(i);
+//            System.out.println(i + ". " + league.getName());
+//        }
 
-        System.out.println("Select a league to add a team to (enter the league number):");
-        int leagueIndex = input.nextInt();
-        if (leagueIndex >= 0 && leagueIndex < leagues.size()) {
-            League selectedLeague = leagues.get(leagueIndex);
+//        System.out.println("Select a league to add a team to (enter the league number):");
+//        int leagueIndex = input.nextInt();
+//        if (leagueIndex >= 0 && leagueIndex < leagues.size()) {
+//            League selectedLeague = leagues.get(leagueIndex);
 
-            while (true) {
-                System.out.println("Select a team to add to the league (enter the team number):");
-                for (int i = 0; i < teams.size(); i++) {
-                    Team team = teams.get(i);
-                    System.out.println(i + ". " + team.getName());
-                }
-
-                System.out.println("Enter 'e' to exit without adding a team.");
-                String teamInput = input.next();
-
-                if (teamInput.equals("e")) {
-                    break;
-                }
-
-                int teamIndex = Integer.parseInt(teamInput);
-                if (teamIndex >= 0 && teamIndex < teams.size()) {
-                    Team selectedTeam = teams.get(teamIndex);
-                    selectedLeague.addTeam(selectedTeam);
-                    System.out.println("Team added to the league: " + selectedTeam.getName());
-                } else {
-                    System.out.println("Invalid team number.");
-                }
+        while (true) {
+            System.out.println("Select a team to add to the league (enter the team number):");
+            for (int i = 0; i < teams.size(); i++) {
+                Team team = teams.get(i);
+                System.out.println(i + ". " + team.getName());
             }
-        } else {
-            System.out.println("Invalid league number.");
+
+            System.out.println("Enter 'e' to exit without adding a team.");
+            String teamInput = input.next();
+
+            if (teamInput.equals("e")) {
+                break;
+            }
+
+            int teamIndex = Integer.parseInt(teamInput);
+            if (teamIndex >= 0 && teamIndex < teams.size()) {
+                Team selectedTeam = teams.get(teamIndex);
+//                    selectedLeague.addTeam(selectedTeam);
+                league.addTeam(selectedTeam);
+                System.out.println("Team added to the league: " + selectedTeam.getName());
+            } else {
+                System.out.println("Invalid team number.");
+            }
         }
+//        } else {
+//            System.out.println("Invalid league number.");
+//        }
     }
 
     @SuppressWarnings("methodlength")

@@ -10,12 +10,12 @@ import java.util.List;
 // The class League represents a Formula 1 fantasy league. The league can contain an arbitrary amount of teams.
 public class League implements Writable {
     private final String name;
-    private final List<Team> league;
+    private final List<Team> teams;
 
     // EFFECTS : constructs a league that contains a list of teams
     public League(String name) {
         this.name = name;
-        this.league = new ArrayList<>();
+        this.teams = new ArrayList<>();
     }
 
     public String getName() {
@@ -23,15 +23,15 @@ public class League implements Writable {
     }
 
     public List<Team> getTeams() {
-        return league;
+        return teams;
     }
 
     // REQUIRES : the team is not already in the league
     // MODIFIES : this
     // EFFECTS  : adds a team to the league
     public boolean addTeam(Team t) {
-        if (!league.contains(t)) {
-            league.add(t);
+        if (!teams.contains(t)) {
+            teams.add(t);
             return true;
         } else {
             return false;
@@ -41,19 +41,24 @@ public class League implements Writable {
     // MODIFIES : this
     // EFFECTS : removes a team from the league
     public void removeTeam(Team t) {
-        league.remove(t);
+        teams.remove(t);
     }
 
     // EFFECTS: returns number of thingies in this workroom
     public int numTeams() {
-        return league.size();
+        return teams.size();
+    }
+
+    @Override
+    public String toString() {
+        return "League Name: " + name;
     }
 
     @Override
     public JSONObject toJson() {
         JSONObject json = new JSONObject();
         json.put("name", name);
-        json.put("league", leagueToJson());
+        json.put("teams", leagueToJson());
         return json;
     }
 
@@ -61,7 +66,7 @@ public class League implements Writable {
     private JSONArray leagueToJson() {
         JSONArray jsonArray = new JSONArray();
 
-        for (Team t : league) {
+        for (Team t : teams) {
             jsonArray.put(t.toJson());
         }
 

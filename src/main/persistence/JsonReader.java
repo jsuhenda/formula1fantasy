@@ -1,5 +1,6 @@
 package persistence;
 
+import model.Driver;
 import model.League;
 import model.Team;
 import org.json.JSONArray;
@@ -41,8 +42,8 @@ public class JsonReader {
 
     // EFFECTS: parses league from JSON object and returns it
     private League parseLeague(JSONObject jsonObject) {
-        String name = jsonObject.getString("name");
-        League league = new League(name);
+        String leagueName = jsonObject.getString("name");
+        League league = new League(leagueName);
         addTeams(league, jsonObject);
         return league;
     }
@@ -50,18 +51,28 @@ public class JsonReader {
     // MODIFIES: wr
     // EFFECTS: parses thingies from JSON object and adds them to workroom
     private void addTeams(League league, JSONObject jsonObject) {
-        JSONArray jsonArray = jsonObject.getJSONArray("league");
+        JSONArray jsonArray = jsonObject.getJSONArray("teams");
         for (Object json : jsonArray) {
             JSONObject nextTeam = (JSONObject) json;
             addTeam(league, nextTeam);
         }
     }
 
-    // MODIFIES: wr
-    // EFFECTS: parses thingy from JSON object and adds it to workroom
-    private void addTeam(League league, JSONObject jsonObject) {
-        String name = jsonObject.getString("name");
-        Team team = new Team(name);
+    private void addTeam(League league, JSONObject teamObject) {
+        String teamName = teamObject.getString("name");
+        Team team = new Team(teamName);
+        addDrivers(team, teamObject);
         league.addTeam(team);
+    }
+
+    private void addDrivers(Team team, JSONObject teamObject) {
+        JSONArray driverArray = teamObject.getJSONArray("drivers");
+        for (Object json : driverArray) {
+            JSONObject driverObject = (JSONObject) json;
+            String driverName = driverObject.getString("name");
+            double driverValue = driverObject.getDouble("value");
+            Driver driver = new Driver(driverName, driverValue);
+            team.addDriver(driver);
+        }
     }
 }

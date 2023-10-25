@@ -36,19 +36,15 @@ class JsonReaderTest extends JsonTest {
     }
 
     @Test
-    void testReaderGeneralLeague() {
+    void testReaderF1League() {
         JsonReader reader = new JsonReader("./data/testReaderF1League.json");
         try {
             League league = reader.read();
-            assertEquals("My league", league.getName());
+            assertEquals("F1 Fantasy", league.getName());
             List<Team> leagueTeams = league.getTeams();
             assertEquals(2, league.numTeams());
-//            List<Driver> drivers = new ArrayList<>();
-//            drivers.add(Driver.d1);
-//            drivers.add(Driver.d2);
-//            drivers.add(Driver.d3);
-            checkTeam("McLaren", leagueTeams.get(0));
-            checkTeam("Ferrari", leagueTeams.get(1));
+            checkTeam("Team A", leagueTeams.get(0));
+            checkTeam("Team B", leagueTeams.get(1));
         } catch (IOException e) {
             fail("Couldn't read from file");
         }

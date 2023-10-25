@@ -46,7 +46,7 @@ class JsonWriterTest extends JsonTest {
     }
 
     @Test
-    void testWriterGeneralLeague() {
+    void testWriterF1League() {
         try {
             League league = new League("My league");
             league.addTeam(new Team("McLaren"));
