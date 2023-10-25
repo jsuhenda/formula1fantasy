@@ -62,4 +62,11 @@ public class LeagueTest {
         assertEquals(0, f1League.getTeams().size());
     }
 
+    @Test
+    public void testToString() {
+        String testString = f1League.toString();
+        String expectedString = "League Name: " + "Formula One Fantasy League";
+        assertEquals(testString, expectedString);
+    }
+
 }

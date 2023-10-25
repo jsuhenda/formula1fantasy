@@ -1,11 +1,13 @@
 package model.test;
+
 import model.Driver;
 import model.Team;
+import org.json.JSONArray;
+import org.json.JSONObject;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class TeamTest {
     private Team testTeam;
@@ -128,5 +130,48 @@ public class TeamTest {
         assertEquals(0, teamMcl.calculateTotalCost());
     }
 
+    @Test
+    public void driverToJsonTest() {
+        Driver testDriver = Driver.d1;
+        JSONObject json = testDriver.toJson();
+        String name = json.getString("name");
+        Double value = json.getDouble("value");
+        assertEquals(name, "Max Verstappen");
+        assertEquals(value, 32.8);
+    }
+
+    @Test
+    public void driversToJsonTest() {
+        Driver testDriver = Driver.d1;
+        Driver testDriver2 = Driver.d2;
+
+        teamRbr.addDriver(testDriver);
+        teamRbr.addDriver(testDriver2);
+
+        JSONObject jsonTeam = teamRbr.toJson();
+        String name = jsonTeam.getString("name"); //team name
+        JSONArray driverJson = jsonTeam.getJSONArray("drivers");
+
+        assertEquals(name, "Red Bull Racing");
+
+        JSONObject driver1 = (JSONObject) driverJson.get(0);
+        JSONObject driver2 = (JSONObject) driverJson.get(1);
+
+        assertEquals(driver1.getString("name"), "Max Verstappen");
+        assertEquals(driver1.getDouble("value"), 32.8);
+        assertEquals(driver2.getString("name"), "Sergio Perez");
+        assertEquals(driver2.getDouble("value"), 20.4);
+    }
+
+    @Test
+    public void testToString() {
+        teamRbr.addDriver(Driver.d5);
+        teamRbr.addDriver(Driver.d6);
+        String testString = teamRbr.toString();
+        String expectedString = "Team: Red Bull Racing\nDrivers: [" + Driver.d5 + ", " + Driver.d6 + "]Total Value: " +
+                teamRbr.calculateTotalCost();
+        assertEquals(testString, expectedString);
+    }
 }
+
 
