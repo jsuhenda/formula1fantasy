@@ -104,6 +104,7 @@ public class FantasyApp {
 
     // EFFECTS: creates a new team with name
     private void createTeam() {
+        List<Team> teams = league.getTeams(); // Use the teams from the loaded league
         System.out.println("Enter the name of the team: ");
         input.nextLine();
         String teamName = input.nextLine();
@@ -140,7 +141,7 @@ public class FantasyApp {
 //        int leagueIndex = input.nextInt();
 //        if (leagueIndex >= 0 && leagueIndex < leagues.size()) {
 //            League selectedLeague = leagues.get(leagueIndex);
-
+        List<Team> teams = league.getTeams(); // Use the teams from the loaded league
         while (true) {
             System.out.println("Select a team to add to the league (enter the team number):");
             for (int i = 0; i < teams.size(); i++) {
@@ -173,6 +174,7 @@ public class FantasyApp {
     @SuppressWarnings("methodlength")
     // EFFECTS: allows user to choose drivers to join their selected team
     private void addDriversToTeam() {
+        List<Team> teams = league.getTeams(); // Use the teams from the loaded league
         System.out.println("List of created teams:");
         for (int i = 0; i < teams.size(); i++) {
             Team team = teams.get(i);
@@ -233,6 +235,7 @@ public class FantasyApp {
 
     // EFFECTS: view the teams' selected drivers
     private void viewDriversInTeam() {
+        List<Team> teams = league.getTeams(); // Use the teams from the loaded league
         System.out.println("Select a team to view drivers (enter the team number):");
         for (int i = 0; i < teams.size(); i++) {
             Team team = teams.get(i);
