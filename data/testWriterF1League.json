@@ -1,0 +1,13 @@
+{
+    "league": [
+        {
+            "name": "McLaren",
+            "drivers": []
+        },
+        {
+            "name": "Ferrari",
+            "drivers": []
+        }
+    ],
+    "name": "My league"
+}

@@ -1,5 +1,8 @@
 package model;
 
+import org.json.JSONObject;
+import persistence.Writable;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -7,7 +10,7 @@ import java.util.List;
 // The Team class represents an F1 team in a Formula 1 fantasy league. Each team can have up to 5 drivers and
 // must not exceed a maximum cost cap of $100m. The class provides methods for managing the team and
 // calculating the total value of the team.
-public class Team {
+public class Team implements Writable {
     private final String name;
     private final List<Driver> drivers;
     private static final double MAX_COST_CAP = 100.0;
@@ -57,5 +60,13 @@ public class Team {
             totalCost += d.getValue();
         }
         return totalCost;
+    }
+
+    @Override
+    public JSONObject toJson() {
+        JSONObject json = new JSONObject();
+        json.put("name", name);
+        json.put("drivers", drivers);
+        return json;
     }
 }

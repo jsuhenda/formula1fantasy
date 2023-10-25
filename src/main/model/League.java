@@ -1,10 +1,14 @@
 package model;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+import persistence.Writable;
+
 import java.util.ArrayList;
 import java.util.List;
 
 // The class League represents a Formula 1 fantasy league. The league can contain an arbitrary amount of teams.
-public class League {
+public class League implements Writable {
     private final String name;
     private final List<Team> league;
 
@@ -39,4 +43,29 @@ public class League {
     public void removeTeam(Team t) {
         league.remove(t);
     }
+
+    // EFFECTS: returns number of thingies in this workroom
+    public int numTeams() {
+        return league.size();
+    }
+
+    @Override
+    public JSONObject toJson() {
+        JSONObject json = new JSONObject();
+        json.put("name", name);
+        json.put("league", leagueToJson());
+        return json;
+    }
+
+    // EFFECTS: returns teams in this league as a JSON array
+    private JSONArray leagueToJson() {
+        JSONArray jsonArray = new JSONArray();
+
+        for (Team t : league) {
+            jsonArray.put(t.toJson());
+        }
+
+        return jsonArray;
+    }
 }
+
