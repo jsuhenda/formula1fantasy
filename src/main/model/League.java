@@ -23,7 +23,7 @@ public class League implements Writable {
     }
 
     public List<Team> getTeams() {
-        return teams;
+        return new ArrayList<>(teams);
     }
 
     // REQUIRES : the team is not already in the league

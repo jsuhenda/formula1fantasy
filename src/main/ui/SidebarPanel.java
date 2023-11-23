@@ -87,26 +87,20 @@ public class SidebarPanel extends JPanel {
     private void addViewLeagueButton() {
         JButton viewLeagueButton = new JButton("View League");
         viewLeagueButton.setAlignmentX(Component.CENTER_ALIGNMENT);
-        viewLeagueButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                if (fantasyUI != null) {
-                    displayLeaguePanel();
-                }
-            }
-        });
         add(viewLeagueButton);
     }
 
-    private void displayLeaguePanel() {
-        if (fantasyUI != null && fantasyUI.getLeague() != null) {
-            LeaguePanel leaguePanel = new LeaguePanel(fantasyUI.getLeague());
-            JFrame leagueFrame = new JFrame("League Information");
-            leagueFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-            leagueFrame.add(leaguePanel);
-            leagueFrame.pack();
-            leagueFrame.setLocationRelativeTo(null);
-            leagueFrame.setVisible(true);
-        }
-    }
+//    private void displayLeaguePanel() {
+//        if (fantasyUI != null && fantasyUI.getLeague() != null) {
+//            JPanel leaguePanel = fantasyUI.createLeaguePanel();
+//
+//            JDialog leagueDialog = new JDialog();
+//            leagueDialog.setTitle("League Information");
+//            leagueDialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+//            leagueDialog.add(leaguePanel);
+//            leagueDialog.pack();
+//            leagueDialog.setLocationRelativeTo(null);
+//            leagueDialog.setVisible(true);
+//        }
+//    }
 }

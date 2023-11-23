@@ -12,10 +12,22 @@ public class DriversPanel extends JPanel implements ActionListener {
     private JPanel driversListPanel;
     private JButton addToTeamButton;
     private FantasyUI fantasyUI;
+    private int imageSize = 50;
+    String[] driverNames = {
+            "Max Verstappen", "Sergio Perez", "Lewis Hamilton", "George Russell", "Charles Leclerc", "Carlos Sainz",
+            "Lando Norris", "Oscar Piastri", "Fernando Alonso", "Lance Stroll", "Pierre Gasly", "Esteban Ocon",
+            "Yuki Tsunoda", "Daniel Ricciardo", "Alex Albon", "Logan Sargeant", "Valterri Bottas", "Zhou Guanyu",
+            "Kevin Magnussen", "Nico Hulkenberg"
+    };
+    String[] imagePaths = {
+            "data/ver.png", "data/per.png", "data/ham.png", "data/rus.png", "data/lec.png", "data/sai.png",
+            "data/nor.png", "data/pia.png", "data/alo.png", "data/str.png", "data/gas.png", "data/oco.png",
+            "data/tsu.png", "data/ric.png", "data/alb.png", "data/sar.png", "data/bot.png", "data/zho.png",
+            "data/mag.png", "data/hul.png"
+    };
 
-    @SuppressWarnings("checkstyle:MethodLength")
+
     public DriversPanel() {
-
         driverImagePaths = new HashMap<>();
         driverImagePaths.put("Max Verstappen", "data/ver.png");
         driverImagePaths.put("Sergio Perez", "data/per.png");
@@ -38,9 +50,11 @@ public class DriversPanel extends JPanel implements ActionListener {
         driverImagePaths.put("Kevin Magnussen", "data/mag.png");
         driverImagePaths.put("Nico Hulkenberg", "data/hul.png");
 
-
         setLayout(new BorderLayout());
+        scrollPane();
+    }
 
+    private void scrollPane() {
         // Create a scroll pane to contain the list of drivers
         JScrollPane scrollPane = new JScrollPane();
         driversListPanel = new JPanel();
@@ -56,24 +70,7 @@ public class DriversPanel extends JPanel implements ActionListener {
         initializeDriverButtons();
     }
 
-
-    @SuppressWarnings("checkstyle:MethodLength")
     private void initializeDriverButtons() {
-        String[] driverNames = {
-                "Max Verstappen", "Sergio Perez", "Lewis Hamilton", "George Russell", "Charles Leclerc", "Carlos Sainz",
-                "Lando Norris", "Oscar Piastri", "Fernando Alonso", "Lance Stroll", "Pierre Gasly", "Esteban Ocon",
-                "Yuki Tsunoda", "Daniel Ricciardo", "Alex Albon", "Logan Sargeant", "Valterri Bottas", "Zhou Guanyu",
-                "Kevin Magnussen", "Nico Hulkenberg"
-        };
-        String[] imagePaths = {
-                "data/ver.png", "data/per.png", "data/ham.png", "data/rus.png", "data/lec.png", "data/sai.png",
-                "data/nor.png", "data/pia.png", "data/alo.png", "data/str.png", "data/gas.png", "data/oco.png",
-                "data/tsu.png", "data/ric.png", "data/alb.png", "data/sar.png", "data/bot.png", "data/zho.png",
-                "data/mag.png", "data/hul.png"
-        };
-
-        int imageSize = 50; // Adjust this size according to your preference
-
         for (int i = 0; i < driverNames.length; i++) {
             String driverName = driverNames[i];
             String imagePath = imagePaths[i];

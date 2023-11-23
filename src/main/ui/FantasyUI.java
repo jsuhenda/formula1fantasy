@@ -11,7 +11,6 @@ import javax.swing.*;
 import java.awt.*;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -30,14 +29,14 @@ public class FantasyUI extends JFrame {
     private JPanel driversListPanel;
     private DriversPanel driversPanel;
     private SidebarPanel sidebarPanel;
-    private LeaguePanel leaguePanel;
+//    private LeaguePanel leaguePanel;
     private Set<String> selectedDrivers = new HashSet<>();
+    private List<Driver> drivers;
 
     private static final String JSON_STORE = "./data/league.json";
     private JsonWriter jsonWriter;
     private JsonReader jsonReader;
     private League league;
-    private List<Team> createdTeams = new ArrayList<>();
 
 
     public FantasyUI() {
@@ -86,6 +85,10 @@ public class FantasyUI extends JFrame {
         createTeamPanel.add(inputField);
         createTeamPanel.add(confirmButton);
 
+        addToMaster();
+    }
+
+    private void addToMaster() {
         masterPanel.add(contentPanel, BorderLayout.CENTER);
         contentPanel.add(welcomePanel, "welcomePanel");
         contentPanel.add(createTeamPanel, "createTeamPanel");
@@ -146,8 +149,7 @@ public class FantasyUI extends JFrame {
     // handles when the user clicks the confirm button
     private void handleConfirm(String teamName) {
         if (!teamName.isEmpty()) {
-            Team newTeam = new Team(teamName);
-            createdTeams.add(newTeam);
+            league.addTeam(new Team(teamName));
             setupTeamPanel(teamName);
         } else {
             JOptionPane.showMessageDialog(this, "Please enter a team name!");
@@ -158,12 +160,8 @@ public class FantasyUI extends JFrame {
     protected void showWelcomePanel() {
         CardLayout cardLayout = (CardLayout) contentPanel.getLayout();
         cardLayout.show(contentPanel, "welcomePanel");
-        if (leaguePanel != null) {
-            leaguePanel.setVisible(false);
-        }
     }
 
-    @SuppressWarnings("checkstyle:MethodLength")
     private void setupTeamPanel(String teamName) {
         if (teamName.isEmpty()) {
             JOptionPane.showMessageDialog(this, "Please enter a team name!");
@@ -334,67 +332,7 @@ public class FantasyUI extends JFrame {
         }
     }
 
-    private void refreshUIWithLoadedLeague() {
-        // Clear the teamPanel and driversListPanel before re-adding teams and drivers
-        if (teamPanel != null && driversListPanel != null) {
-            teamPanel.removeAll();
-            driversListPanel.removeAll();
-        }
-
-        // Display teams and drivers from the loaded league
-        displayTeamsAndDrivers();
-
-        // Check if the teamPanel is not null and not added to createTeamPanel, then add it
-        if (createTeamPanel != null && teamPanel != null && !isComponentInPanel(createTeamPanel, teamPanel)) {
-            createTeamPanel.add(teamPanel);
-        }
-
-        // Update the UI after re-adding teams and drivers
-        if (createTeamPanel != null) {
-            createTeamPanel.revalidate();
-            createTeamPanel.repaint();
-        }
-    }
-
-    // Helper method to check if a component is already added to a panel
-    private boolean isComponentInPanel(Container container, Component component) {
-        Component[] components = container.getComponents();
-        for (Component c : components) {
-            if (c.equals(component)) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    private void displayTeamsAndDrivers() {
-        // Get teams and their drivers from the loaded league
-        List<Team> teams = league.getTeams();
-
-        for (Team team : teams) {
-            JLabel teamLabel = new JLabel("Team Name: " + team.getName());
-            teamLabel.setFont(new Font("Arial", Font.BOLD, 24));
-            teamLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
-            teamPanel.add(teamLabel);
-
-            List<Driver> driversInTeam = team.getDrivers();
-            for (Driver driver : driversInTeam) {
-                JLabel driverLabel = new JLabel(driver.getName());
-                // Set the driver's image - replace this line with code to add driver's image
-                driverLabel.setFont(new Font("Arial", Font.PLAIN, 18));
-                driversListPanel.add(driverLabel);
-            }
-        }
-
-        // Update the UI after re-adding teams and drivers
-        teamPanel.revalidate();
-        driversListPanel.revalidate();
-        teamPanel.repaint();
-        driversListPanel.repaint();
-    }
-
     // Create a button to create a league
-    // creates a button to create team
     private JButton createLeagueButton() {
         JButton createLeagueButton = new JButton("Create League");
         createLeagueButton.setMaximumSize(new Dimension(200, 50));
@@ -421,7 +359,7 @@ public class FantasyUI extends JFrame {
         if (result == JOptionPane.OK_OPTION) {
             String leagueName = leagueNameField.getText();
             if (!leagueName.isEmpty()) {
-                createLeagueAndAddTeams(leagueName, createdTeams); // Pass the stored teams to create the league
+                createLeagueAndAddTeams(leagueName, league.getTeams()); // Pass the stored teams to create the league
             } else {
                 JOptionPane.showMessageDialog(null, "Please enter a league name!");
             }
@@ -443,6 +381,7 @@ public class FantasyUI extends JFrame {
         System.out.println("League created: " + leagueName);
         System.out.println("Teams added to the league: " + teams.size());
     }
+
 
     public League getLeague() {
         return league;
