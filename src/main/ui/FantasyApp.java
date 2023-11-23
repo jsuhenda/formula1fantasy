@@ -32,6 +32,7 @@ public class FantasyApp {
     }
 
 
+    // EFFECTS
     @SuppressWarnings("methodlength")
     public void runFantasy() {
 //        leagues = new ArrayList<>();
@@ -52,23 +53,18 @@ public class FantasyApp {
                 case 3:
                     addTeamsToLeague();
                     break;
-
                 case 4:
                     addDriversToTeam();
                     break;
-
                 case 5:
                     viewDriversInTeam();
                     break;
-
                 case 6:
                     saveLeague();
                     break;
-
                 case 7:
                     loadLeague();
                     break;
-
                 case 8:
                     System.out.println("Exiting the application.");
                     input.close();
@@ -103,7 +99,7 @@ public class FantasyApp {
 //    }
 
     // EFFECTS: creates a new team with name
-    private void createTeam() {
+    protected void createTeam() {
         List<Team> teams = league.getTeams(); // Use the teams from the loaded league
         System.out.println("Enter the name of the team: ");
         input.nextLine();
@@ -113,6 +109,7 @@ public class FantasyApp {
         System.out.println("Team created: " + newTeam.getName());
     }
 
+    // EFFECTS: prints the list of teams created
     private void printTeams() {
         System.out.println("List of created teams:");
         List<Team> teams = league.getTeams(); // Use the teams from the loaded league
@@ -233,6 +230,7 @@ public class FantasyApp {
         }
     }
 
+    // REQUIRES: team is already created
     // EFFECTS: view the teams' selected drivers
     private void viewDriversInTeam() {
         List<Team> teams = league.getTeams(); // Use the teams from the loaded league
@@ -258,7 +256,7 @@ public class FantasyApp {
         }
     }
 
-    // EFFECTS: saves the workroom to file
+    // EFFECTS: saves the league to file
     private void saveLeague() {
         try {
             jsonWriter.open();
@@ -271,7 +269,7 @@ public class FantasyApp {
     }
 
     // MODIFIES: this
-    // EFFECTS: loads workroom from file
+    // EFFECTS: loads league from file
     private void loadLeague() {
         try {
             league = jsonReader.read();
@@ -279,5 +277,9 @@ public class FantasyApp {
         } catch (IOException e) {
             System.out.println("Unable to read from file: " + JSON_STORE);
         }
+    }
+
+    public League getLeague() {
+        return league;
     }
 }

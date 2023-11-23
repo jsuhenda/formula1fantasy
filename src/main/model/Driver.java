@@ -19,9 +19,9 @@ public class Driver implements Writable {
     public static final Driver d11 = new Driver("Pierre Gasly", 12.5);
     public static final Driver d12 = new Driver("Esteban Ocon", 11.4);
     public static final Driver d13 = new Driver("Yuki Tsunoda", 8.2);
-    public static final Driver d14 = new Driver("Liam Lawson", 5.4);
+    public static final Driver d14 = new Driver("Daniel Ricciardo", 8.0);
     public static final Driver d15 = new Driver("Alex Albon", 9.8);
-    public static final Driver d16 = new Driver("Daniel Ricciardo", 8.0);
+    public static final Driver d16 = new Driver("Logan Sargeant", 4.5);
     public static final Driver d17 = new Driver("Valtteri Bottas", 7.6);
     public static final Driver d18 = new Driver("Zhou Guanyu", 5.5);
     public static final Driver d19 = new Driver("Kevin Magnussen", 5.5);
@@ -44,6 +44,7 @@ public class Driver implements Writable {
         return value;
     }
 
+    // EFFECTS: returns a string representation of a driver's name and its value in millions ($)
     @Override
     public String toString() {
         return "Driver: " + name + "\nValue: $" + value + " million";

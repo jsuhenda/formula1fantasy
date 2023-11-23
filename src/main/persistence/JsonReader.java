@@ -21,7 +21,7 @@ public class JsonReader {
         this.source = source;
     }
 
-    // EFFECTS: reads workroom from file and returns it;
+    // EFFECTS: reads league from file and returns it;
     // throws IOException if an error occurs reading data from file
     public League read() throws IOException {
         String jsonData = readFile(source);
@@ -48,8 +48,8 @@ public class JsonReader {
         return league;
     }
 
-    // MODIFIES: wr
-    // EFFECTS: parses thingies from JSON object and adds them to workroom
+    // MODIFIES: league
+    // EFFECTS: parses teams from JSON object and adds them to league
     private void addTeams(League league, JSONObject jsonObject) {
         JSONArray jsonArray = jsonObject.getJSONArray("teams");
         for (Object json : jsonArray) {
@@ -58,6 +58,8 @@ public class JsonReader {
         }
     }
 
+    // MODIFIES: league
+    // EFFECTS: parses team from JSON object and adds it to league
     private void addTeam(League league, JSONObject teamObject) {
         String teamName = teamObject.getString("name");
         Team team = new Team(teamName);

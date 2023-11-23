@@ -63,10 +63,12 @@ public class Team implements Writable {
         return totalCost;
     }
 
+    // EFFECTS : returns a string representation of a team, with its name, drivers and total value
     public String toString() {
         return "Team: " + name + "\nDrivers: " + drivers + "Total Value: " + calculateTotalCost();
     }
 
+    // EFFECTS : converts the team to a JSON object representing the team, with its name and drivers
     @Override
     public JSONObject toJson() {
         JSONObject json = new JSONObject();
@@ -75,6 +77,7 @@ public class Team implements Writable {
         return json;
     }
 
+    // EFFECTS : returns the drivers in this team as a JSON array
     private JSONArray driversToJson() {
         JSONArray jsonArray = new JSONArray();
         for (Driver d : drivers) {

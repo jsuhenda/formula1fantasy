@@ -49,11 +49,14 @@ public class League implements Writable {
         return teams.size();
     }
 
+    // EFFECTS : returns a string representation of the league's name
     @Override
     public String toString() {
         return "League Name: " + name;
     }
 
+    // EFFECTS : converts the league to a JSON object representing the league,
+    // including its name and its teams
     @Override
     public JSONObject toJson() {
         JSONObject json = new JSONObject();
