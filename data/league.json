@@ -1,10 +1,19 @@
 {
-    "teams": [{
-        "name": "s",
-        "drivers": [{
-            "name": "Lewis Hamilton",
-            "value": 30
-        }]
-    }],
+    "teams": [
+        {
+            "name": "s",
+            "drivers": [{
+                "name": "Max Verstappen",
+                "value": 32.8
+            }]
+        },
+        {
+            "name": "s2",
+            "drivers": [{
+                "name": "Sergio Perez",
+                "value": 20.4
+            }]
+        }
+    ],
     "name": "F1 Fantasy"
 }

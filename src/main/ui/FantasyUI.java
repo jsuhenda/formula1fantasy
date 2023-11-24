@@ -15,6 +15,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.List;
 
 public class FantasyUI extends JFrame implements ActionListener {
 
@@ -41,7 +42,6 @@ public class FantasyUI extends JFrame implements ActionListener {
     private JsonWriter jsonWriter;
     private JsonReader jsonReader;
     private League league;
-    private Team team;
 //    private Driver driverToRemove;
 
     private JButton createTeamButton;
@@ -167,24 +167,24 @@ public class FantasyUI extends JFrame implements ActionListener {
     // handles when the user clicks the confirm button
     private void handleConfirm(String teamName) {
         if (!teamName.isEmpty()) {
-            team = new Team((teamName));
-            league.addTeam(team);
-            setupTeamPanel(teamName);
+            Team newTeam = new Team((teamName));
+            league.addTeam(newTeam);
+            setupTeamPanel(newTeam);
         } else {
             JOptionPane.showMessageDialog(this, "Please enter a team name!");
         }
     }
 
-    private void setupTeamPanel(String teamName) {
+    private void setupTeamPanel(Team team) {
 
         teamPanel = createTeamPanelWithLayout();
-        teamNameLabel = createTeamNameLabel(teamName);
+        teamNameLabel = createTeamNameLabel(team.getName());
         driversListPanel = createDriversListPanel();
         totalValueLabel = createTotalValueLabel();
 
         selectedDrivers.clear();
 
-        makeButton();
+        makeDriverButton(team);
 
         teamPanel.add(teamNameLabel);
         teamPanel.add(totalValueLabel);
@@ -219,7 +219,7 @@ public class FantasyUI extends JFrame implements ActionListener {
     }
 
     // Method to update the total value label
-    public void updateTotalValueLabel() {
+    public void updateTotalValueLabel(Team team) {
         double totalValue = team.calculateTotalCost();
         totalValue = Math.round(totalValue * 10.0) / 10.0; // Round to one decimal place
         totalValueLabel.setText("Total Team Value: $" + String.format("%.1f", totalValue) + "m");
@@ -231,57 +231,80 @@ public class FantasyUI extends JFrame implements ActionListener {
         return panel;
     }
 
-    private void makeButton() {
+    private void makeDriverButton(Team team) {
         addDriversButton = new JButton("Add Drivers");
-        addDriversButton.addActionListener(this);
+        addDriversButton.addActionListener(e -> createDriversPanel(team));
 
         removeDriversButton = new JButton("Remove Drivers");
-        removeDriversButton.addActionListener(this);
+        removeDriversButton.addActionListener(e -> removeDriverFromTeam(team));
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        if (e.getSource() == addDriversButton) {
-            driversPanel = new DriversPanel();
-            driversPanel.setFantasyUI(this); // Pass the reference to the DriversPanel
-            JFrame newFrame = new JFrame();
-            newFrame.setSize(200, 800);
-            newFrame.add(driversPanel);
-            newFrame.validate();
-            newFrame.repaint();
-            newFrame.setVisible(true);
-        } else if (e.getSource() == removeDriversButton) {
-//            removeDriverFromTeam(driverToRemove);
-            removeDriverFromTeam();
-        }
+//        if (e.getSource() == addDriversButton) {
+////            createDriversPanel();
+//        } else if (e.getSource() == removeDriversButton) {
+////            removeDriverFromTeam(driverToRemove);
+////            removeDriverFromTeam();
+//        }
     }
 
-    public void addDriverToTeam(Driver driver, String driverImage) {
+    private void createDriversPanel(Team team) {
+        driversPanel = new DriversPanel();
+        driversPanel.setFantasyUI(this); // Pass the reference to the DriversPanel
+        driversPanel.setTeam(team);
+        JFrame newFrame = new JFrame();
+        newFrame.setSize(200, 800);
+        newFrame.add(driversPanel);
+        newFrame.validate();
+        newFrame.repaint();
+        newFrame.setVisible(true);
+    }
+
+    public void addDriverToTeam(Driver driver, String driverImage, Team team) {
         boolean added = team.addDriver(driver);
 
         if (added) {
-            int imageSize = 50;
-            driverLabel = new JLabel(driver.getName() + " ($" + driver.getValue() + "m)");
-            ImageIcon driverIcon = new ImageIcon(driverImage);
-            Image image = driverIcon.getImage().getScaledInstance(imageSize, imageSize, Image.SCALE_SMOOTH);
-            ImageIcon scaledIcon = new ImageIcon(image);
-            driverLabel.setIcon(scaledIcon);
-            driverLabel.setFont(new Font("Arial", Font.PLAIN, 18));
-
-            driversListPanel.add(driverLabel);
-            updateTotalValueLabel();
-            driversListPanel.validate();
-            driversListPanel.repaint();
-            createTeamPanel.validate();
-            createTeamPanel.repaint();
+//            int imageSize = 50;
+//            driverLabel = new JLabel(driver.getName() + " ($" + driver.getValue() + "m)");
+//            ImageIcon driverIcon = new ImageIcon(driverImage);
+//            Image image = driverIcon.getImage().getScaledInstance(imageSize, imageSize, Image.SCALE_SMOOTH);
+//            ImageIcon scaledIcon = new ImageIcon(image);
+//            driverLabel.setIcon(scaledIcon);
+//            driverLabel.setFont(new Font("Arial", Font.PLAIN, 18));
+//
+//            driversListPanel.add(driverLabel);
+//            updateTotalValueLabel();
+//            driversListPanel.validate();
+//            driversListPanel.repaint();
+//            createTeamPanel.validate();
+//            createTeamPanel.repaint();
+            addDriverPanelToTeam(driver, driverImage, team);
 
             JOptionPane.showMessageDialog(this, "Successfully added " + driver.getName() + " to your team!");
         } else {
-            handleFailedDriverAddition(driver);
+            handleFailedDriverAddition(driver, team);
         }
     }
 
-    private void handleFailedDriverAddition(Driver driver) {
+    private void addDriverPanelToTeam(Driver driver, String driverImage, Team team) {
+        int imageSize = 50;
+        driverLabel = new JLabel(driver.getName() + " ($" + driver.getValue() + "m)");
+        ImageIcon driverIcon = new ImageIcon(driverImage);
+        Image image = driverIcon.getImage().getScaledInstance(imageSize, imageSize, Image.SCALE_SMOOTH);
+        ImageIcon scaledIcon = new ImageIcon(image);
+        driverLabel.setIcon(scaledIcon);
+        driverLabel.setFont(new Font("Arial", Font.PLAIN, 18));
+
+        driversListPanel.add(driverLabel);
+        updateTotalValueLabel(team);
+        driversListPanel.validate();
+        driversListPanel.repaint();
+        createTeamPanel.validate();
+        createTeamPanel.repaint();
+    }
+
+    private void handleFailedDriverAddition(Driver driver, Team team) {
         if (team.getDrivers().size() >= Team.MAX_DRIVERS) {
             JOptionPane.showMessageDialog(this,
                     "You have exceeded the maximum limit of drivers!");
@@ -294,7 +317,7 @@ public class FantasyUI extends JFrame implements ActionListener {
         }
     }
 
-    public void removeDriverFromTeam() {
+    public void removeDriverFromTeam(Team team) {
         // team.removeDriver(driver);
         // this.driverToRemove = driver;
 
@@ -310,7 +333,7 @@ public class FantasyUI extends JFrame implements ActionListener {
                 JButton removeDriverButton = new JButton("Remove " + d.getName());
 //                removeDriverButton.addActionListener(removeDriverEvent -> team.removeDriver(d));
                 removeDriverButton.addActionListener(removeDriverEvent ->
-                        removeDriverAndLabel(d, removeDriverButton, removeDriversPanel));
+                        removeDriverAndLabel(d, removeDriverButton, removeDriversPanel, team));
                 removeDriversPanel.add(removeDriverButton);
             }
 
@@ -323,7 +346,7 @@ public class FantasyUI extends JFrame implements ActionListener {
         }
     }
 
-    private void removeDriverAndLabel(Driver driver, JButton button, JPanel panel) {
+    private void removeDriverAndLabel(Driver driver, JButton button, JPanel panel, Team team) {
         for (Component component : driversListPanel.getComponents()) {
             if (component instanceof JLabel) {
                 JLabel driverLabel = (JLabel) component;
@@ -362,6 +385,8 @@ public class FantasyUI extends JFrame implements ActionListener {
         try {
             league = jsonReader.read();
             System.out.println("Loaded " + league.getName() + " from " + JSON_STORE);
+            leaguePanel.setLeague(league);
+            updateDriverPanel();
         } catch (IOException e) {
             System.out.println("Unable to read from file: " + JSON_STORE);
         }
@@ -378,6 +403,20 @@ public class FantasyUI extends JFrame implements ActionListener {
         leaguePanel.setBackground(Color.RED);
         return leaguePanel;
     }
+
+    private void updateDriverPanel() {
+        List<Team> teams = league.getTeams();
+
+        for (Team t : teams) {
+            setupTeamPanel(t);
+            List<Driver> drivers = t.getDrivers();
+            for (Driver d : drivers) {
+                addDriverPanelToTeam(d, "data/ham.png", t);
+            }
+        }
+
+    }
+
 
 
 }

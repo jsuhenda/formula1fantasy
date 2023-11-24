@@ -1,6 +1,7 @@
 package ui;
 
 import model.Driver;
+import model.Team;
 
 import javax.swing.*;
 import java.awt.*;
@@ -17,6 +18,7 @@ public class DriversPanel extends JPanel implements ActionListener {
     private FantasyUI fantasyUI;
     private int imageSize = 50;
     private Driver driver;
+    private Team team;
     private String imagePath;
 
     String[] imagePaths = {
@@ -101,6 +103,9 @@ public class DriversPanel extends JPanel implements ActionListener {
         this.fantasyUI = fantasyUI;
     }
 
+    public void setTeam(Team t) {
+        this.team = t;
+    }
 
     @Override
     public void actionPerformed(ActionEvent e) {
@@ -108,7 +113,7 @@ public class DriversPanel extends JPanel implements ActionListener {
             JButton curr = (JButton) e.getSource();
             for (Map.Entry<String, Driver> entry : driverImagePaths.entrySet()) {
                 if (entry.getValue().getName().equals(curr.getText())) {
-                    fantasyUI.addDriverToTeam(entry.getValue(), entry.getKey()); // Pass both name and image
+                    fantasyUI.addDriverToTeam(entry.getValue(), entry.getKey(), team); // Pass both name and image
                 }
             }
         }
