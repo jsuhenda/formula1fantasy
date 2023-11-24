@@ -5,8 +5,13 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class SidebarPanel extends JPanel {
+public class SidebarPanel extends JPanel implements ActionListener {
     private FantasyUI fantasyUI;
+    private JButton homeButton;
+    private JButton teamButton;
+    private JButton saveButton;
+    private JButton loadButton;
+    private JButton viewLeagueButton;
 
     public SidebarPanel() {
         initialize();
@@ -21,86 +26,54 @@ public class SidebarPanel extends JPanel {
         setBackground(Color.LIGHT_GRAY);
         setPreferredSize(new Dimension(200, FantasyUI.HEIGHT));
 
-        addHomeButton();
-        addCreateTeamButton();
-        addSaveButton();
-        addLoadButton();
-        addViewLeagueButton();
+        makeButton();
     }
 
-    private void addHomeButton() {
-        JButton homeButton = new JButton("Home");
+    private void makeButton() {
+        // home button
+        homeButton = new JButton("Home");
         homeButton.setAlignmentX(Component.CENTER_ALIGNMENT);
-        homeButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                if (fantasyUI != null) {
-                    fantasyUI.showWelcomePanel();
-                }
-            }
-        });
+        homeButton.addActionListener(this);
         add(homeButton);
-    }
 
-    private void addCreateTeamButton() {
-        JButton createTeamButton = new JButton("Create Team");
-        createTeamButton.setAlignmentX(Component.CENTER_ALIGNMENT);
-        createTeamButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                if (fantasyUI != null) {
-                    fantasyUI.showCreateTeamPanel();
-                }
-            }
-        });
-        add(createTeamButton);
-    }
+        // view teams button
+        teamButton = new JButton("Create Team");
+        teamButton.setAlignmentX(Component.CENTER_ALIGNMENT);
+        teamButton.addActionListener(this);
+        add(teamButton);
 
-    private void addSaveButton() {
-        JButton saveButton = new JButton("Save");
+        // save button
+        saveButton = new JButton("Save");
         saveButton.setAlignmentX(Component.CENTER_ALIGNMENT);
-        saveButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                if (fantasyUI != null) {
-                    fantasyUI.saveLeague();
-                }
-            }
-        });
+        saveButton.addActionListener(this);
         add(saveButton);
-    }
 
-    private void addLoadButton() {
-        JButton loadButton = new JButton("Load");
+        // load button
+        loadButton = new JButton("Load");
         loadButton.setAlignmentX(Component.CENTER_ALIGNMENT);
-        loadButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                if (fantasyUI != null) {
-                    fantasyUI.loadLeague();
-                }
-            }
-        });
+        loadButton.addActionListener(this);
         add(loadButton);
-    }
 
-    private void addViewLeagueButton() {
-        JButton viewLeagueButton = new JButton("View League");
+        // view league button
+        viewLeagueButton = new JButton("View League");
         viewLeagueButton.setAlignmentX(Component.CENTER_ALIGNMENT);
+        viewLeagueButton.addActionListener(this);
         add(viewLeagueButton);
     }
 
-//    private void displayLeaguePanel() {
-//        if (fantasyUI != null && fantasyUI.getLeague() != null) {
-//            JPanel leaguePanel = fantasyUI.createLeaguePanel();
-//
-//            JDialog leagueDialog = new JDialog();
-//            leagueDialog.setTitle("League Information");
-//            leagueDialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-//            leagueDialog.add(leaguePanel);
-//            leagueDialog.pack();
-//            leagueDialog.setLocationRelativeTo(null);
-//            leagueDialog.setVisible(true);
-//        }
-//    }
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        if (e.getSource() == homeButton) {
+            fantasyUI.showHomePanel();
+        } else if (e.getSource() == teamButton) {
+            fantasyUI.showCreateTeamPanel();
+        } else if (e.getSource() == saveButton) {
+            fantasyUI.saveLeague();
+        } else if (e.getSource() == loadButton) {
+            fantasyUI.loadLeague();
+        } else if (e.getSource() == viewLeagueButton) {
+//            fantasyUI.showViewLeaguePanel();
+        }
+
+    }
 }

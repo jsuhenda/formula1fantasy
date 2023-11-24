@@ -1,5 +1,7 @@
 package ui;
 
+import model.Driver;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -8,17 +10,15 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class DriversPanel extends JPanel implements ActionListener {
-    private Map<String, String> driverImagePaths;
+    private Map<String, Driver> driverImagePaths;
     private JPanel driversListPanel;
     private JButton addToTeamButton;
+    private JButton driverButton;
     private FantasyUI fantasyUI;
     private int imageSize = 50;
-    String[] driverNames = {
-            "Max Verstappen", "Sergio Perez", "Lewis Hamilton", "George Russell", "Charles Leclerc", "Carlos Sainz",
-            "Lando Norris", "Oscar Piastri", "Fernando Alonso", "Lance Stroll", "Pierre Gasly", "Esteban Ocon",
-            "Yuki Tsunoda", "Daniel Ricciardo", "Alex Albon", "Logan Sargeant", "Valterri Bottas", "Zhou Guanyu",
-            "Kevin Magnussen", "Nico Hulkenberg"
-    };
+    private Driver driver;
+    private String imagePath;
+
     String[] imagePaths = {
             "data/ver.png", "data/per.png", "data/ham.png", "data/rus.png", "data/lec.png", "data/sai.png",
             "data/nor.png", "data/pia.png", "data/alo.png", "data/str.png", "data/gas.png", "data/oco.png",
@@ -29,30 +29,34 @@ public class DriversPanel extends JPanel implements ActionListener {
 
     public DriversPanel() {
         driverImagePaths = new HashMap<>();
-        driverImagePaths.put("Max Verstappen", "data/ver.png");
-        driverImagePaths.put("Sergio Perez", "data/per.png");
-        driverImagePaths.put("Lewis Hamilton", "data/ham.png");
-        driverImagePaths.put("George Russell", "data/rus.png");
-        driverImagePaths.put("Charles Leclerc", "data/lec.png");
-        driverImagePaths.put("Carlos Sainz", "data/sai.png");
-        driverImagePaths.put("Lando Norris", "data/nor.png");
-        driverImagePaths.put("Oscar Piastri", "data/pia.png");
-        driverImagePaths.put("Fernando Alonso", "data/alo.png");
-        driverImagePaths.put("Lance Stroll", "data/str.png");
-        driverImagePaths.put("Pierre Gasly", "data/gas.png");
-        driverImagePaths.put("Esteban Ocon", "data/oco.png");
-        driverImagePaths.put("Yuki Tsunoda", "data/tsu.png");
-        driverImagePaths.put("Daniel Ricciardo", "data/ric.png");
-        driverImagePaths.put("Alex Albon", "data/alb.png");
-        driverImagePaths.put("Logan Sargeant", "data/sar.png");
-        driverImagePaths.put("Valterri Bottas", "data/bot.png");
-        driverImagePaths.put("Zhou Guanyu", "data/zho.png");
-        driverImagePaths.put("Kevin Magnussen", "data/mag.png");
-        driverImagePaths.put("Nico Hulkenberg", "data/hul.png");
+        driverImagePaths.put("data/ver.png", Driver.d1);
+        driverImagePaths.put("data/per.png", Driver.d2);
+        driverImagePaths.put("data/ham.png", Driver.d3);
+        driverImagePaths.put("data/rus.png", Driver.d4);
+        driverImagePaths.put("data/lec.png", Driver.d5);
+        driverImagePaths.put("data/sai.png", Driver.d6);
+        driverImagePaths.put("data/nor.png", Driver.d7);
+        driverImagePaths.put("data/pia.png", Driver.d8);
+        driverImagePaths.put("data/alo.png", Driver.d9);
+        driverImagePaths.put("data/str.png", Driver.d10);
+        driverImagePaths.put("data/gas.png", Driver.d11);
+        driverImagePaths.put("data/oco.png", Driver.d12);
+        driverImagePaths.put("data/tsu.png", Driver.d13);
+        driverImagePaths.put("data/ric.png", Driver.d14);
+        driverImagePaths.put("data/alb.png", Driver.d15);
+        driverImagePaths.put("data/sar.png", Driver.d16);
+        driverImagePaths.put("data/bot.png", Driver.d17);
+        driverImagePaths.put("data/zho.png", Driver.d18);
+        driverImagePaths.put("data/mag.png", Driver.d19);
+        driverImagePaths.put("data/hul.png", Driver.d20);
 
         setLayout(new BorderLayout());
         scrollPane();
     }
+
+//    private List<Driver> getDriverList() {
+//        return driver.returnDriverList();
+//    }
 
     private void scrollPane() {
         // Create a scroll pane to contain the list of drivers
@@ -71,15 +75,16 @@ public class DriversPanel extends JPanel implements ActionListener {
     }
 
     private void initializeDriverButtons() {
-        for (int i = 0; i < driverNames.length; i++) {
-            String driverName = driverNames[i];
-            String imagePath = imagePaths[i];
+        for (int i = 0; i < driverImagePaths.size(); i++) {
+
+            imagePath = imagePaths[i];
+            driver = driverImagePaths.get(imagePath);
 
             ImageIcon originalIcon = new ImageIcon(imagePath);
             Image image = originalIcon.getImage().getScaledInstance(imageSize, imageSize, Image.SCALE_SMOOTH);
             ImageIcon scaledIcon = new ImageIcon(image);
 
-            JButton driverButton = new JButton(driverName, scaledIcon);
+            JButton driverButton = new JButton(driver.getName(), scaledIcon);
             driverButton.setVerticalTextPosition(SwingConstants.BOTTOM);
             driverButton.setHorizontalTextPosition(SwingConstants.CENTER);
 
@@ -92,23 +97,16 @@ public class DriversPanel extends JPanel implements ActionListener {
         }
     }
 
-    public void setFantasyUIReference(FantasyUI fantasyUI) {
+    public void setFantasyUI(FantasyUI fantasyUI) {
         this.fantasyUI = fantasyUI;
     }
 
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        if (e.getSource() instanceof JButton) {
-            JButton clickedButton = (JButton) e.getSource();
-            if (!clickedButton.getText().equals("Add to Team")) {
-                String selectedDriver = clickedButton.getText();
-                String imagePath = driverImagePaths.get(selectedDriver);
-                ImageIcon driverImage = new ImageIcon(new ImageIcon(imagePath).getImage()
-                        .getScaledInstance(50, 50, Image.SCALE_SMOOTH)); // Adjust image size
-
-                fantasyUI.addDriverToTeam(selectedDriver, driverImage); // Pass both name and image
-            }
+        if (e.getSource() == driverButton) {
+            System.out.println("blehhhhhh");
+            fantasyUI.addDriverToTeam(driver, imagePath); // Pass both name and image
         }
     }
 }

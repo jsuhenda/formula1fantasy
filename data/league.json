@@ -1,0 +1,17 @@
+{
+    "teams": [
+        {
+            "name": "test",
+            "drivers": []
+        },
+        {
+            "name": "test",
+            "drivers": []
+        },
+        {
+            "name": "test2",
+            "drivers": []
+        }
+    ],
+    "name": "F1 Fantasy"
+}
