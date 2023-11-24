@@ -14,8 +14,8 @@ import java.util.List;
 public class Team implements Writable {
     private final String name;
     private final List<Driver> drivers;
-    private static final double MAX_COST_CAP = 100.0;
-    private static final int MAX_DRIVERS = 5;
+    public static final double MAX_COST_CAP = 100.0;
+    public static final int MAX_DRIVERS = 5;
 
     // EFFECTS : constructs a team that contains a list of drivers
     public Team(String name) {

@@ -72,7 +72,7 @@ public class SidebarPanel extends JPanel implements ActionListener {
         } else if (e.getSource() == loadButton) {
             fantasyUI.loadLeague();
         } else if (e.getSource() == viewLeagueButton) {
-//            fantasyUI.showViewLeaguePanel();
+            fantasyUI.showLeaguePanel();
         }
 
     }

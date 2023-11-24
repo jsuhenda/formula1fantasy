@@ -84,7 +84,7 @@ public class DriversPanel extends JPanel implements ActionListener {
             Image image = originalIcon.getImage().getScaledInstance(imageSize, imageSize, Image.SCALE_SMOOTH);
             ImageIcon scaledIcon = new ImageIcon(image);
 
-            JButton driverButton = new JButton(driver.getName(), scaledIcon);
+            driverButton = new JButton(driver.getName(), scaledIcon);
             driverButton.setVerticalTextPosition(SwingConstants.BOTTOM);
             driverButton.setHorizontalTextPosition(SwingConstants.CENTER);
 
@@ -104,9 +104,18 @@ public class DriversPanel extends JPanel implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        if (e.getSource() == driverButton) {
-            System.out.println("blehhhhhh");
-            fantasyUI.addDriverToTeam(driver, imagePath); // Pass both name and image
+        if (e.getSource() instanceof JButton) {
+            JButton curr = (JButton) e.getSource();
+            for (Map.Entry<String, Driver> entry : driverImagePaths.entrySet()) {
+                if (entry.getValue().getName().equals(curr.getText())) {
+                    fantasyUI.addDriverToTeam(entry.getValue(), entry.getKey()); // Pass both name and image
+                }
+            }
         }
+
+//        if (e.getSource() == driverButton) {
+//            System.out.println("blehhhhhh");
+//            fantasyUI.addDriverToTeam(driver, imagePath); // Pass both name and image
+//        }
     }
 }

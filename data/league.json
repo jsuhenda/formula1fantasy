@@ -1,17 +1,10 @@
 {
-    "teams": [
-        {
-            "name": "test",
-            "drivers": []
-        },
-        {
-            "name": "test",
-            "drivers": []
-        },
-        {
-            "name": "test2",
-            "drivers": []
-        }
-    ],
+    "teams": [{
+        "name": "s",
+        "drivers": [{
+            "name": "Lewis Hamilton",
+            "value": 30
+        }]
+    }],
     "name": "F1 Fantasy"
 }
