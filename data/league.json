@@ -1,17 +1,23 @@
 {
     "teams": [
         {
-            "name": "s",
-            "drivers": [{
-                "name": "Max Verstappen",
-                "value": 32.8
-            }]
+            "name": "Team1",
+            "drivers": [
+                {
+                    "name": "Lewis Hamilton",
+                    "value": 30
+                },
+                {
+                    "name": "Charles Leclerc",
+                    "value": 23.3
+                }
+            ]
         },
         {
-            "name": "s2",
+            "name": "Team2",
             "drivers": [{
-                "name": "Sergio Perez",
-                "value": 20.4
+                "name": "Carlos Sainz",
+                "value": 19.8
             }]
         }
     ],

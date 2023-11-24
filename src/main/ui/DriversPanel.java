@@ -20,6 +20,8 @@ public class DriversPanel extends JPanel implements ActionListener {
     private Driver driver;
     private Team team;
     private String imagePath;
+    private JPanel driverTeamListPanel;
+    private JLabel totalValueLabel;
 
     String[] imagePaths = {
             "data/ver.png", "data/per.png", "data/ham.png", "data/rus.png", "data/lec.png", "data/sai.png",
@@ -27,6 +29,7 @@ public class DriversPanel extends JPanel implements ActionListener {
             "data/tsu.png", "data/ric.png", "data/alb.png", "data/sar.png", "data/bot.png", "data/zho.png",
             "data/mag.png", "data/hul.png"
     };
+
 
 
     public DriversPanel() {
@@ -107,13 +110,19 @@ public class DriversPanel extends JPanel implements ActionListener {
         this.team = t;
     }
 
+    public void setDriverTeamListPanel(JPanel driverTeamListPanel) {
+        this.driverTeamListPanel = driverTeamListPanel;
+    }
+
+
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() instanceof JButton) {
             JButton curr = (JButton) e.getSource();
             for (Map.Entry<String, Driver> entry : driverImagePaths.entrySet()) {
                 if (entry.getValue().getName().equals(curr.getText())) {
-                    fantasyUI.addDriverToTeam(entry.getValue(), entry.getKey(), team); // Pass both name and image
+                    fantasyUI.addDriverToTeam(entry.getValue(), entry.getKey(), team, driverTeamListPanel,
+                            totalValueLabel); // Pass both name and image
                 }
             }
         }
@@ -122,5 +131,13 @@ public class DriversPanel extends JPanel implements ActionListener {
 //            System.out.println("blehhhhhh");
 //            fantasyUI.addDriverToTeam(driver, imagePath); // Pass both name and image
 //        }
+    }
+
+    public void setTotalValueLabel(JLabel totalValueLabel) {
+        this.totalValueLabel = totalValueLabel;
+    }
+
+    public void updateTotalValueLabelText(String text) {
+        this.totalValueLabel.setText(text);
     }
 }
