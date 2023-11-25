@@ -11,9 +11,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 public class FantasyUI extends JFrame {
 
@@ -24,27 +22,12 @@ public class FantasyUI extends JFrame {
     private JPanel contentPanel;
     private JPanel createTeamPanel;
     private JPanel homePanel;
-    private JPanel teamPanel;
-//    private JPanel driversListPanel;
     private LeaguePanel leaguePanel;
 
-    private JLabel teamNameLabel;
-    private JLabel driverLabel;
-//    private JLabel totalValueLabel;
-
-//    private DriversPanel driversPanel;
-    private SidebarPanel sidebarPanel;
-    private Set<String> selectedDrivers = new HashSet<>();
-
     private static final String JSON_STORE = "./data/league.json";
-    private JsonWriter jsonWriter;
-    private JsonReader jsonReader;
+    private final JsonWriter jsonWriter;
+    private final JsonReader jsonReader;
     private League league;
-//    private Driver driverToRemove;
-
-    private JButton createTeamButton;
-    private JButton removeDriversButton;
-
 
     public FantasyUI() {
 
@@ -76,8 +59,8 @@ public class FantasyUI extends JFrame {
         masterPanel.setBackground(Color.RED);
 
         contentPanel = new JPanel(new CardLayout());
-        initalizeHomePanel();
-        intializeCreateTeamPanel();
+        initializeHomePanel();
+        initializeCreateTeamPanel();
         initializeLeaguePanel();
 
         masterPanel.add(contentPanel, BorderLayout.CENTER);
@@ -88,11 +71,10 @@ public class FantasyUI extends JFrame {
 
 
     // initializes sidebar panel
-    private JPanel initializeSidebar() {
-        sidebarPanel = new SidebarPanel();
+    private void initializeSidebar() {
+        SidebarPanel sidebarPanel = new SidebarPanel();
         masterPanel.add(sidebarPanel, BorderLayout.WEST);
         sidebarPanel.setFantasyUI(this);
-        return sidebarPanel;
     }
 
     // initializes welcome label
@@ -104,7 +86,7 @@ public class FantasyUI extends JFrame {
     }
 
     private JButton createTeamButton() {
-        createTeamButton = new JButton("Create Team");
+        JButton createTeamButton = new JButton("Create Team");
         createTeamButton.setMaximumSize(new Dimension(200, 50));
         ImageIcon plusIcon = new ImageIcon(new ImageIcon("data/plusIcon.png").getImage()
                 .getScaledInstance(30, 30, Image.SCALE_SMOOTH));
@@ -115,12 +97,11 @@ public class FantasyUI extends JFrame {
         return createTeamButton;
     }
 
-    private JPanel initalizeHomePanel() {
+    private void initializeHomePanel() {
         homePanel = new JPanel();
         homePanel.setBackground(Color.RED);
         homePanel.add(initializeWelcomeLabel());
         homePanel.add(createTeamButton());
-        return homePanel;
     }
 
     // switches to the home panel
@@ -129,13 +110,13 @@ public class FantasyUI extends JFrame {
         cardLayout.show(contentPanel, "homePanel");
     }
 
-    // switches panel and displays the create team panel
+    // switches panel and displays the createTeam panel
     protected void showCreateTeamPanel() {
         CardLayout cardLayout = (CardLayout) contentPanel.getLayout();
         cardLayout.show(contentPanel, "createTeamPanel");
     }
 
-    private JPanel intializeCreateTeamPanel() {
+    private void initializeCreateTeamPanel() {
         createTeamPanel = new JPanel();
         createTeamPanel.setBackground(Color.RED);
         createTeamPanel.setLayout(new BoxLayout(createTeamPanel, BoxLayout.Y_AXIS));
@@ -143,7 +124,6 @@ public class FantasyUI extends JFrame {
         JButton confirmButton = createConfirmButton(inputField);
         createTeamPanel.add(inputField);
         createTeamPanel.add(confirmButton);
-        return createTeamPanel;
     }
 
     private JTextField initializeInputField() {
@@ -184,7 +164,7 @@ public class FantasyUI extends JFrame {
         addDriversButton.addActionListener(e -> createDriversPanel(team, driversListPanel, totalValueLabel));
 
         JButton removeDriversButton = new JButton("Remove Drivers");
-        removeDriversButton.addActionListener(e -> removeDriverFromTeam(team, driversListPanel));
+        removeDriversButton.addActionListener(e -> removeDriverFromTeam(team, driversListPanel, totalValueLabel));
 
         teamPanel.add(teamNameLabel);
         teamPanel.add(totalValueLabel);
@@ -291,9 +271,7 @@ public class FantasyUI extends JFrame {
         }
     }
 
-    public void removeDriverFromTeam(Team team, JPanel driversListPanel) {
-        // team.removeDriver(driver);
-        // this.driverToRemove = driver;
+    public void removeDriverFromTeam(Team team, JPanel driversListPanel, JLabel tvLabel) {
 
         if (!team.getDrivers().isEmpty()) {
             JFrame removeDriversFrame = new JFrame("Remove Drivers");
@@ -305,9 +283,9 @@ public class FantasyUI extends JFrame {
 
             for (Driver d : team.getDrivers()) {
                 JButton removeDriverButton = new JButton("Remove " + d.getName());
-//                removeDriverButton.addActionListener(removeDriverEvent -> team.removeDriver(d));
                 removeDriverButton.addActionListener(removeDriverEvent ->
-                        removeDriverAndLabel(d, removeDriverButton, removeDriversPanel, team, driversListPanel));
+                        removeDriverAndLabel(d, removeDriverButton,
+                                removeDriversPanel, team, driversListPanel, tvLabel));
                 removeDriversPanel.add(removeDriverButton);
             }
 
@@ -320,7 +298,8 @@ public class FantasyUI extends JFrame {
         }
     }
 
-    private void removeDriverAndLabel(Driver driver, JButton button, JPanel panel, Team team, JPanel driversListPanel) {
+    private void removeDriverAndLabel(Driver driver, JButton button, JPanel panel, Team team,
+                                      JPanel driversListPanel, JLabel tvLabel) {
 
         for (Component component : driversListPanel.getComponents()) {
             if (component instanceof JLabel) {
@@ -329,6 +308,7 @@ public class FantasyUI extends JFrame {
                     System.out.println("Team: " + team.getName());
                     driversListPanel.remove(driverLabel);
                     team.removeDriver(driver);
+                    updateTotalValueLabel(team, tvLabel);
                     driversListPanel.revalidate();
                     driversListPanel.repaint();
                     JOptionPane.showMessageDialog(this,
@@ -374,10 +354,9 @@ public class FantasyUI extends JFrame {
         cardLayout.show(contentPanel, "leaguePanel");
     }
 
-    private JPanel initializeLeaguePanel() {
+    private void initializeLeaguePanel() {
         leaguePanel = new LeaguePanel(league);
         leaguePanel.setBackground(Color.RED);
-        return leaguePanel;
     }
 
     private void updateDriverPanel() {
@@ -387,7 +366,8 @@ public class FantasyUI extends JFrame {
             JPanel driversLIstPanel = setupTeamPanel(t);
             List<Driver> drivers = t.getDrivers();
             for (Driver d : drivers) {
-                addDriverPanelToTeam(d, "data/ham.png", t, driversLIstPanel, new JLabel());
+                String imgPath = "data/" + d.getName().split(" ")[1].substring(0, 3).toLowerCase() + ".png";
+                addDriverPanelToTeam(d, imgPath, t, driversLIstPanel, new JLabel());
             }
         }
 

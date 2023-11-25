@@ -11,15 +11,10 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class DriversPanel extends JPanel implements ActionListener {
-    private Map<String, Driver> driverImagePaths;
+    private final Map<String, Driver> driverImagePaths;
     private JPanel driversListPanel;
-    private JButton addToTeamButton;
-    private JButton driverButton;
     private FantasyUI fantasyUI;
-    private int imageSize = 50;
-    private Driver driver;
     private Team team;
-    private String imagePath;
     private JPanel driverTeamListPanel;
     private JLabel totalValueLabel;
 
@@ -59,10 +54,6 @@ public class DriversPanel extends JPanel implements ActionListener {
         scrollPane();
     }
 
-//    private List<Driver> getDriverList() {
-//        return driver.returnDriverList();
-//    }
-
     private void scrollPane() {
         // Create a scroll pane to contain the list of drivers
         JScrollPane scrollPane = new JScrollPane();
@@ -72,7 +63,7 @@ public class DriversPanel extends JPanel implements ActionListener {
 
         add(scrollPane, BorderLayout.CENTER);
 
-        addToTeamButton = new JButton("Add to Team");
+        JButton addToTeamButton = new JButton("Add to Team");
         addToTeamButton.addActionListener(this);
         add(addToTeamButton, BorderLayout.SOUTH);
 
@@ -82,14 +73,15 @@ public class DriversPanel extends JPanel implements ActionListener {
     private void initializeDriverButtons() {
         for (int i = 0; i < driverImagePaths.size(); i++) {
 
-            imagePath = imagePaths[i];
-            driver = driverImagePaths.get(imagePath);
+            int imageSize = 50;
+            String imagePath = imagePaths[i];
+            Driver driver = driverImagePaths.get(imagePath);
 
             ImageIcon originalIcon = new ImageIcon(imagePath);
             Image image = originalIcon.getImage().getScaledInstance(imageSize, imageSize, Image.SCALE_SMOOTH);
             ImageIcon scaledIcon = new ImageIcon(image);
 
-            driverButton = new JButton(driver.getName(), scaledIcon);
+            JButton driverButton = new JButton(driver.getName(), scaledIcon);
             driverButton.setVerticalTextPosition(SwingConstants.BOTTOM);
             driverButton.setHorizontalTextPosition(SwingConstants.CENTER);
 
@@ -126,18 +118,9 @@ public class DriversPanel extends JPanel implements ActionListener {
                 }
             }
         }
-
-//        if (e.getSource() == driverButton) {
-//            System.out.println("blehhhhhh");
-//            fantasyUI.addDriverToTeam(driver, imagePath); // Pass both name and image
-//        }
     }
 
     public void setTotalValueLabel(JLabel totalValueLabel) {
         this.totalValueLabel = totalValueLabel;
-    }
-
-    public void updateTotalValueLabelText(String text) {
-        this.totalValueLabel.setText(text);
     }
 }

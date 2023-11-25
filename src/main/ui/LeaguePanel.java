@@ -60,8 +60,4 @@ public class LeaguePanel extends JPanel {
         this.league = league; // Setter method for league instance
         updateLeagueInfo(); // Update league information when league is set
     }
-
-    public JPanel getLeaguePanel() {
-        return this; // Return the LeaguePanel itself
-    }
 }
