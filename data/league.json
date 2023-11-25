@@ -1,0 +1,46 @@
+{
+    "teams": [
+        {
+            "name": "Team1",
+            "drivers": [
+                {
+                    "name": "Charles Leclerc",
+                    "value": 23.3
+                },
+                {
+                    "name": "Max Verstappen",
+                    "value": 32.8
+                },
+                {
+                    "name": "Lewis Hamilton",
+                    "value": 30
+                }
+            ]
+        },
+        {
+            "name": "Team2",
+            "drivers": [
+                {
+                    "name": "Carlos Sainz",
+                    "value": 19.8
+                },
+                {
+                    "name": "Max Verstappen",
+                    "value": 32.8
+                },
+                {
+                    "name": "Lando Norris",
+                    "value": 16.7
+                }
+            ]
+        },
+        {
+            "name": "Team3",
+            "drivers": [{
+                "name": "George Russell",
+                "value": 22.6
+            }]
+        }
+    ],
+    "name": "F1 Fantasy"
+}

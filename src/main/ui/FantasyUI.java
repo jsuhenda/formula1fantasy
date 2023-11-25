@@ -11,9 +11,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 public class FantasyUI extends JFrame {
 
@@ -22,22 +20,14 @@ public class FantasyUI extends JFrame {
 
     private JPanel masterPanel;
     private JPanel contentPanel;
-    private JPanel teamPanel;
     private JPanel createTeamPanel;
-    private JPanel welcomePanel;
-    private JLabel teamNameLabel;
-    private JPanel driversListPanel;
-    private DriversPanel driversPanel;
-    private SidebarPanel sidebarPanel;
-//    private LeaguePanel leaguePanel;
-    private Set<String> selectedDrivers = new HashSet<>();
-    private List<Driver> drivers;
+    private JPanel homePanel;
+    private LeaguePanel leaguePanel;
 
     private static final String JSON_STORE = "./data/league.json";
-    private JsonWriter jsonWriter;
-    private JsonReader jsonReader;
+    private final JsonWriter jsonWriter;
+    private final JsonReader jsonReader;
     private League league;
-
 
     public FantasyUI() {
 
@@ -48,6 +38,7 @@ public class FantasyUI extends JFrame {
         initializeFrame();
         initializeUI();
         initializeSidebar();
+        add(masterPanel);
         setVisible(true);
     }
 
@@ -68,39 +59,22 @@ public class FantasyUI extends JFrame {
         masterPanel.setBackground(Color.RED);
 
         contentPanel = new JPanel(new CardLayout());
-        welcomePanel = new JPanel();
-        welcomePanel.setBackground(Color.RED);
-        JLabel welcomeLabel = initializeWelcomeLabel();
-        JButton createTeamButton = createTeamButton();
-        welcomePanel.add(welcomeLabel, BorderLayout.NORTH);
-        welcomePanel.add(createTeamButton);
-        JButton createLeagueButton = createLeagueButton();
-        welcomePanel.add(createLeagueButton);
+        initializeHomePanel();
+        initializeCreateTeamPanel();
+        initializeLeaguePanel();
 
-        createTeamPanel = new JPanel();
-        createTeamPanel.setBackground(Color.RED);
-        createTeamPanel.setLayout(new BoxLayout(createTeamPanel, BoxLayout.Y_AXIS));
-        JTextField inputField = initializeInputField();
-        JButton confirmButton = createConfirmButton(inputField);
-        createTeamPanel.add(inputField);
-        createTeamPanel.add(confirmButton);
-
-        addToMaster();
-    }
-
-    private void addToMaster() {
         masterPanel.add(contentPanel, BorderLayout.CENTER);
-        contentPanel.add(welcomePanel, "welcomePanel");
+        contentPanel.add(homePanel, "homePanel");
         contentPanel.add(createTeamPanel, "createTeamPanel");
-        add(masterPanel);
+        contentPanel.add(leaguePanel, "leaguePanel");
     }
+
 
     // initializes sidebar panel
-    private JPanel initializeSidebar() {
-        sidebarPanel = new SidebarPanel();
+    private void initializeSidebar() {
+        SidebarPanel sidebarPanel = new SidebarPanel();
         masterPanel.add(sidebarPanel, BorderLayout.WEST);
         sidebarPanel.setFantasyUI(this);
-        return sidebarPanel;
     }
 
     // initializes welcome label
@@ -111,7 +85,6 @@ public class FantasyUI extends JFrame {
         return welcomeLabel;
     }
 
-    // creates a button to create team
     private JButton createTeamButton() {
         JButton createTeamButton = new JButton("Create Team");
         createTeamButton.setMaximumSize(new Dimension(200, 50));
@@ -124,7 +97,35 @@ public class FantasyUI extends JFrame {
         return createTeamButton;
     }
 
-    // creates a text field to enter team name
+    private void initializeHomePanel() {
+        homePanel = new JPanel();
+        homePanel.setBackground(Color.RED);
+        homePanel.add(initializeWelcomeLabel());
+        homePanel.add(createTeamButton());
+    }
+
+    // switches to the home panel
+    protected void showHomePanel() {
+        CardLayout cardLayout = (CardLayout) contentPanel.getLayout();
+        cardLayout.show(contentPanel, "homePanel");
+    }
+
+    // switches panel and displays the createTeam panel
+    protected void showCreateTeamPanel() {
+        CardLayout cardLayout = (CardLayout) contentPanel.getLayout();
+        cardLayout.show(contentPanel, "createTeamPanel");
+    }
+
+    private void initializeCreateTeamPanel() {
+        createTeamPanel = new JPanel();
+        createTeamPanel.setBackground(Color.RED);
+        createTeamPanel.setLayout(new BoxLayout(createTeamPanel, BoxLayout.Y_AXIS));
+        JTextField inputField = initializeInputField();
+        JButton confirmButton = createConfirmButton(inputField);
+        createTeamPanel.add(inputField);
+        createTeamPanel.add(confirmButton);
+    }
+
     private JTextField initializeInputField() {
         JTextField inputField = new JTextField(20);
         inputField.setMaximumSize(new Dimension(500, 30));
@@ -140,44 +141,33 @@ public class FantasyUI extends JFrame {
         return confirmButton;
     }
 
-    // switches panel and displays the create team panel
-    protected void showCreateTeamPanel() {
-        CardLayout cardLayout = (CardLayout) contentPanel.getLayout();
-        cardLayout.show(contentPanel, "createTeamPanel");
-    }
-
     // handles when the user clicks the confirm button
     private void handleConfirm(String teamName) {
         if (!teamName.isEmpty()) {
-            league.addTeam(new Team(teamName));
-            setupTeamPanel(teamName);
+            Team newTeam = new Team((teamName));
+            league.addTeam(newTeam);
+            setupTeamPanel(newTeam);
         } else {
             JOptionPane.showMessageDialog(this, "Please enter a team name!");
         }
     }
 
-    // switches to the welcome panel (home page)
-    protected void showWelcomePanel() {
-        CardLayout cardLayout = (CardLayout) contentPanel.getLayout();
-        cardLayout.show(contentPanel, "welcomePanel");
-    }
+    private JPanel setupTeamPanel(Team team) {
 
-    private void setupTeamPanel(String teamName) {
-        if (teamName.isEmpty()) {
-            JOptionPane.showMessageDialog(this, "Please enter a team name!");
-            return;
-        }
+        JPanel teamPanel = createTeamPanelWithLayout();
+        JLabel teamNameLabel = createTeamNameLabel(team.getName());
+        JPanel driversListPanel = createDriversListPanel();
+        JLabel totalValueLabel = createTotalValueLabel(team);
 
-        teamPanel = createTeamPanelWithLayout();
-        teamNameLabel = createTeamNameLabel(teamName);
-        driversListPanel = createDriversListPanel();
+//        makeDriverButton(team);
+        JButton addDriversButton = new JButton("Add Drivers");
+        addDriversButton.addActionListener(e -> createDriversPanel(team, driversListPanel, totalValueLabel));
 
-        selectedDrivers.clear();
-
-        JButton addDriversButton = createAddDriversButton();
-        JButton removeDriversButton = createRemoveDriversButton();
+        JButton removeDriversButton = new JButton("Remove Drivers");
+        removeDriversButton.addActionListener(e -> removeDriverFromTeam(team, driversListPanel, totalValueLabel));
 
         teamPanel.add(teamNameLabel);
+        teamPanel.add(totalValueLabel);
         teamPanel.add(driversListPanel);
         teamPanel.add(addDriversButton);
         teamPanel.add(removeDriversButton);
@@ -185,8 +175,8 @@ public class FantasyUI extends JFrame {
         createTeamPanel.add(teamPanel);
         createTeamPanel.validate();
         createTeamPanel.repaint();
+        return driversListPanel;
     }
-
 
     private JPanel createTeamPanelWithLayout() {
         JPanel panel = new JPanel();
@@ -202,74 +192,88 @@ public class FantasyUI extends JFrame {
         return label;
     }
 
+    private JLabel createTotalValueLabel(Team team) {
+        JLabel tvLabel = new JLabel();
+        updateTotalValueLabel(team, tvLabel);
+        tvLabel.setFont(new Font("Arial", Font.BOLD, 24));
+        tvLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
+        return tvLabel;
+    }
+
+    // Method to update the total value label
+    public void updateTotalValueLabel(Team team, JLabel totalValueLabel) {
+
+        double totalValue = team.calculateTotalCost();
+        System.out.println("Updating total value: " + totalValue);
+        totalValue = Math.round(totalValue * 10.0) / 10.0; // Round to one decimal place
+        totalValueLabel.setText("Total Team Value: $" + String.format("%.1f", totalValue) + "m");
+    }
+
     private JPanel createDriversListPanel() {
         JPanel panel = new JPanel();
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
         return panel;
     }
 
-    private JButton createAddDriversButton() {
-        JButton button = new JButton("Add Drivers");
-        button.addActionListener(driverEvent -> {
-            if (driversPanel == null) {
-                driversPanel = new DriversPanel();
-                driversPanel.setFantasyUIReference(this);
-            }
-            showDriversDialog();
-        });
-        return button;
+    private void createDriversPanel(Team team, JPanel driversListPanel, JLabel totalValueLabel) {
+        DriversPanel driversPanel = new DriversPanel();
+        driversPanel.setFantasyUI(this); // Pass the reference to the DriversPanel
+        driversPanel.setTeam(team);
+        driversPanel.setDriverTeamListPanel(driversListPanel);
+        driversPanel.setTotalValueLabel(totalValueLabel);
+        JFrame newFrame = new JFrame();
+        newFrame.setSize(200, 800);
+        newFrame.add(driversPanel);
+        newFrame.validate();
+        newFrame.repaint();
+        newFrame.setVisible(true);
     }
 
+    public void addDriverToTeam(Driver driver, String driverImage, Team team, JPanel driversListPanel, JLabel tvLabel) {
+        boolean added = team.addDriver(driver);
 
-    // show the driver's dialog when choosing drivers
-    private void showDriversDialog() {
-        if (driversPanel == null) {
-            driversPanel = new DriversPanel();
-            driversPanel.setFantasyUIReference(this);
+        if (added) {
+            addDriverPanelToTeam(driver, driverImage, team, driversListPanel, tvLabel);
+            JOptionPane.showMessageDialog(this, "Successfully added " + driver.getName() + " to your team!");
+        } else {
+            handleFailedDriverAddition(driver, team);
         }
-
-        JDialog driversDialog = new JDialog(this, "Select Drivers", Dialog.ModalityType.APPLICATION_MODAL);
-        driversDialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-        driversDialog.setLayout(new BorderLayout());
-        driversDialog.add(driversPanel, BorderLayout.CENTER);
-        driversDialog.pack();
-        driversDialog.setLocationRelativeTo(this);
-        driversDialog.setVisible(true);
     }
 
-    // method to add driver to team, adds only if size of team is less than maximum driver size of 5, and
-    // driver is not already in team
-    public void addDriverToTeam(String driverName, ImageIcon driverImage) {
-        if (selectedDrivers.size() >= 5) {
-            JOptionPane.showMessageDialog(this, "You've reached the maximum limit of 5 drivers.");
-            return;
-        }
-
-        if (selectedDrivers.contains(driverName)) {
-            JOptionPane.showMessageDialog(this, "You've already added " + driverName + " to your team.");
-            return;
-        }
-
-        JLabel driverLabel = new JLabel(driverName);
-        driverLabel.setIcon(driverImage);
+    private void addDriverPanelToTeam(Driver driver, String driverImage, Team team, JPanel driversListPanel,
+                                      JLabel tvLabel) {
+        int imageSize = 50;
+        JLabel driverLabel = new JLabel(driver.getName() + " ($" + driver.getValue() + "m)");
+        ImageIcon driverIcon = new ImageIcon(driverImage);
+        Image image = driverIcon.getImage().getScaledInstance(imageSize, imageSize, Image.SCALE_SMOOTH);
+        ImageIcon scaledIcon = new ImageIcon(image);
+        driverLabel.setIcon(scaledIcon);
         driverLabel.setFont(new Font("Arial", Font.PLAIN, 18));
+
         driversListPanel.add(driverLabel);
-        driversListPanel.revalidate();
+        updateTotalValueLabel(team, tvLabel);
+        driversListPanel.validate();
         driversListPanel.repaint();
-
-        selectedDrivers.add(driverName);
-
-        JOptionPane.showMessageDialog(this, "Successfully added " + driverName + " to your team!");
+        createTeamPanel.validate();
+        createTeamPanel.repaint();
     }
 
-    private JButton createRemoveDriversButton() {
-        JButton button = new JButton("Remove Driver");
-        button.addActionListener(removeDriverEvent -> showRemoveDriversDialog());
-        return button;
+    private void handleFailedDriverAddition(Driver driver, Team team) {
+        if (team.getDrivers().size() >= Team.MAX_DRIVERS) {
+            JOptionPane.showMessageDialog(this,
+                    "You have exceeded the maximum limit of drivers!");
+        } else if (team.getDrivers().contains(driver)) {
+            JOptionPane.showMessageDialog(this,
+                    "You have already added " + driver.getName() + " to your team!");
+        } else {
+            JOptionPane.showMessageDialog(this,
+                    "Adding " + driver.getName() + " exceeds the budget!");
+        }
     }
 
-    private void showRemoveDriversDialog() {
-        if (!selectedDrivers.isEmpty()) {
+    public void removeDriverFromTeam(Team team, JPanel driversListPanel, JLabel tvLabel) {
+
+        if (!team.getDrivers().isEmpty()) {
             JFrame removeDriversFrame = new JFrame("Remove Drivers");
             removeDriversFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
             removeDriversFrame.setLayout(new BorderLayout());
@@ -277,9 +281,11 @@ public class FantasyUI extends JFrame {
             JPanel removeDriversPanel = new JPanel();
             removeDriversPanel.setLayout(new BoxLayout(removeDriversPanel, BoxLayout.Y_AXIS));
 
-            for (String driverName : selectedDrivers) {
-                JButton removeDriverButton = new JButton("Remove " + driverName);
-                removeDriverButton.addActionListener(removeDriverEvent -> removeDriverFromTeam(driverName));
+            for (Driver d : team.getDrivers()) {
+                JButton removeDriverButton = new JButton("Remove " + d.getName());
+                removeDriverButton.addActionListener(removeDriverEvent ->
+                        removeDriverAndLabel(d, removeDriverButton,
+                                removeDriversPanel, team, driversListPanel, tvLabel));
                 removeDriversPanel.add(removeDriverButton);
             }
 
@@ -292,16 +298,24 @@ public class FantasyUI extends JFrame {
         }
     }
 
-    private void removeDriverFromTeam(String driverName) {
+    private void removeDriverAndLabel(Driver driver, JButton button, JPanel panel, Team team,
+                                      JPanel driversListPanel, JLabel tvLabel) {
+
         for (Component component : driversListPanel.getComponents()) {
             if (component instanceof JLabel) {
                 JLabel driverLabel = (JLabel) component;
-                if (driverLabel.getText().equals(driverName)) {
+                if (driverLabel.getText().contains(driver.getName())) {
+                    System.out.println("Team: " + team.getName());
                     driversListPanel.remove(driverLabel);
-                    selectedDrivers.remove(driverName);
+                    team.removeDriver(driver);
+                    updateTotalValueLabel(team, tvLabel);
                     driversListPanel.revalidate();
                     driversListPanel.repaint();
-                    JOptionPane.showMessageDialog(this, "Successfully removed " + driverName + " from your team!");
+                    JOptionPane.showMessageDialog(this,
+                            "Successfully removed " + driver.getName() + " from your team!");
+                    panel.remove(button);
+                    panel.validate();
+                    panel.repaint();
                     break;
                 }
             }
@@ -327,63 +341,39 @@ public class FantasyUI extends JFrame {
         try {
             league = jsonReader.read();
             System.out.println("Loaded " + league.getName() + " from " + JSON_STORE);
+            leaguePanel.setLeague(league);
+            updateDriverPanel();
         } catch (IOException e) {
             System.out.println("Unable to read from file: " + JSON_STORE);
         }
     }
 
-    // Create a button to create a league
-    private JButton createLeagueButton() {
-        JButton createLeagueButton = new JButton("Create League");
-        createLeagueButton.setMaximumSize(new Dimension(200, 50));
-        ImageIcon plusIcon = new ImageIcon(new ImageIcon("data/plusIcon.png").getImage()
-                .getScaledInstance(30, 30, Image.SCALE_SMOOTH));
-        createLeagueButton.setIcon(plusIcon);
-        createLeagueButton.setFont(new Font("Arial", Font.BOLD, 20));
-        createLeagueButton.setMargin(new Insets(10, 10, 10, 10));
-        createLeagueButton.addActionListener(e -> showCreateLeagueDialog());
-        return createLeagueButton;
+    // switches to the home panel
+    protected void showLeaguePanel() {
+        CardLayout cardLayout = (CardLayout) contentPanel.getLayout();
+        cardLayout.show(contentPanel, "leaguePanel");
     }
 
-    // Show a dialog to input league name and add stored teams to the league
-    private void showCreateLeagueDialog() {
-        JTextField leagueNameField = new JTextField(20);
+    private void initializeLeaguePanel() {
+        leaguePanel = new LeaguePanel(league);
+        leaguePanel.setBackground(Color.RED);
+    }
 
-        JPanel panel = new JPanel();
-        panel.add(new JLabel("Enter League Name:"));
-        panel.add(leagueNameField);
+    private void updateDriverPanel() {
+        List<Team> teams = league.getTeams();
 
-        int result = JOptionPane.showConfirmDialog(null, panel, "Create League",
-                JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
-
-        if (result == JOptionPane.OK_OPTION) {
-            String leagueName = leagueNameField.getText();
-            if (!leagueName.isEmpty()) {
-                createLeagueAndAddTeams(leagueName, league.getTeams()); // Pass the stored teams to create the league
-            } else {
-                JOptionPane.showMessageDialog(null, "Please enter a league name!");
+        for (Team t : teams) {
+            JPanel driversLIstPanel = setupTeamPanel(t);
+            List<Driver> drivers = t.getDrivers();
+            for (Driver d : drivers) {
+                String imgPath = "data/" + d.getName().split(" ")[1].substring(0, 3).toLowerCase() + ".png";
+                addDriverPanelToTeam(d, imgPath, t, driversLIstPanel, new JLabel());
             }
         }
-    }
 
-    private void createLeagueAndAddTeams(String leagueName, List<Team> teams) {
-        League newLeague = new League(leagueName);
-
-        for (Team team : teams) {
-            newLeague.addTeam(team);
-        }
-
-        this.league = newLeague;
-
-        // Optionally, you can save the league after creation
-        saveLeague();
-
-        System.out.println("League created: " + leagueName);
-        System.out.println("Teams added to the league: " + teams.size());
     }
 
 
-    public League getLeague() {
-        return league;
-    }
+
 }
+
