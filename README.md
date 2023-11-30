@@ -24,7 +24,56 @@ but I like to think of this personal project as baby steps to who knows? perhaps
 - As a user, I want to be able to create a new F1 team and add it to a list of F1 teams (a league)
 - As a user, I want to be able to select an F1 team and add a new driver to the team or remove an existing driver from the team
 - As a user, I want to be able to select a team and view a list of drivers on that team
-- As a user, I want to be able to select a driver on a team and add a new statistic for that driver, for example, the number of career victories
+- As a user, I want to be able to view my current team value (in millions $)
 - As a user, I want to have the option to save the drivers I added to a team
 - As a user, I want to have the option to load my saved teams and drivers
 
+Phase 4: Task 2 - Sample of event log
+
+Thu Nov 30 14:25:56 PST 2023
+Created league: F1 Fantasy
+
+Thu Nov 30 14:26:08 PST 2023
+Created team: Team 1
+
+Thu Nov 30 14:26:08 PST 2023
+Successfully added team: Team 1
+
+Thu Nov 30 14:26:17 PST 2023
+Successfully added Max Verstappen to Team 1
+
+Thu Nov 30 14:26:18 PST 2023
+Successfully added Sergio Perez to Team 1
+
+Thu Nov 30 14:26:20 PST 2023
+Successfully added Lewis Hamilton to Team 1
+
+Thu Nov 30 14:26:22 PST 2023
+Failed to add Lewis Hamilton to Team 1
+
+Thu Nov 30 14:26:24 PST 2023
+Failed to add George Russell to Team 1
+
+Thu Nov 30 14:26:27 PST 2023
+Successfully added Oscar Piastri to Team 1
+
+Thu Nov 30 14:26:31 PST 2023
+Created team: Team 2
+
+Thu Nov 30 14:26:31 PST 2023
+Successfully added team: Team 2
+
+Thu Nov 30 14:26:37 PST 2023
+Successfully added Charles Leclerc to Team 2
+
+Thu Nov 30 14:26:39 PST 2023
+Successfully added Carlos Sainz to Team 2
+
+Thu Nov 30 14:26:41 PST 2023
+Successfully added Fernando Alonso to Team 2
+
+Thu Nov 30 14:26:44 PST 2023
+Removed Fernando Alonso
+
+
+Process finished with exit code 0

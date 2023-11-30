@@ -16,6 +16,7 @@ public class League implements Writable {
     public League(String name) {
         this.name = name;
         this.teams = new ArrayList<>();
+        EventLog.getInstance().logEvent(new Event("Created league: " + name));
     }
 
     public String getName() {
@@ -32,8 +33,10 @@ public class League implements Writable {
     public boolean addTeam(Team t) {
         if (!teams.contains(t)) {
             teams.add(t);
+            EventLog.getInstance().logEvent(new Event("Successfully added team: " + t.getName()));
             return true;
         } else {
+            EventLog.getInstance().logEvent(new Event("Failed to add team: " + t.getName()));
             return false;
         }
     }
@@ -42,6 +45,7 @@ public class League implements Writable {
     // EFFECTS : removes a team from the league
     public void removeTeam(Team t) {
         teams.remove(t);
+        EventLog.getInstance().logEvent(new Event("Removed team successfully."));
     }
 
     // EFFECTS: returns number of thingies in this workroom

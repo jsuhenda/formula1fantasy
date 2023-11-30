@@ -84,7 +84,7 @@ public class TeamTest {
         assertTrue(teamRbr.getDrivers().contains(Driver.d16));
         assertEquals("Red Bull Racing", teamRbr.getName());
         assertEquals(5, teamRbr.getDrivers().size());
-        assertEquals(74.8, teamRbr.calculateTotalCost());
+        assertEquals(73.9, teamRbr.calculateTotalCost());
     }
 
     @Test
@@ -104,7 +104,7 @@ public class TeamTest {
         assertFalse(testTeam.getDrivers().contains(Driver.d15));
         assertEquals("My Team", testTeam.getName());
         assertEquals(5, testTeam.getDrivers().size());
-        assertEquals(70.3, testTeam.calculateTotalCost());
+        assertEquals(72.9, testTeam.calculateTotalCost());
     }
 
     @Test

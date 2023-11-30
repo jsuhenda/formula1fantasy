@@ -21,6 +21,7 @@ public class Team implements Writable {
     public Team(String name) {
         this.name = name;
         this.drivers = new ArrayList<>();
+        EventLog.getInstance().logEvent(new Event("Created team: " + name));
     }
 
     public String getName() {
@@ -37,8 +38,10 @@ public class Team implements Writable {
                 && drivers.size() < MAX_DRIVERS
                 && (!drivers.contains(driver))) {
             drivers.add(driver);
+            EventLog.getInstance().logEvent(new Event("Successfully added " + driver.getName() + " to " + name));
             return true; // Driver added successfully
         } else {
+            EventLog.getInstance().logEvent(new Event("Failed to add " + driver.getName() + " to " + name));
             return false; // Team has reached cost cap or maximum number of drivers
         }
     }
@@ -48,6 +51,7 @@ public class Team implements Writable {
     // EFFECTS  : Removes a driver from the team
     public void removeDriver(Driver driver) {
         drivers.remove(driver);
+        EventLog.getInstance().logEvent(new Event("Removed " + driver.getName()));
     }
 
     public List<Driver> getDrivers() {
@@ -60,7 +64,7 @@ public class Team implements Writable {
         for (Driver d : drivers) {
             totalCost += d.getValue();
         }
-        return totalCost;
+        return Math.round(totalCost * 10.0) / 10.0;
     }
 
     // EFFECTS : returns a string representation of a team, with its name, drivers and total value

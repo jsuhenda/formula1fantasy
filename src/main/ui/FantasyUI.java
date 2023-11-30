@@ -2,6 +2,8 @@
 package ui;
 
 import model.Driver;
+import model.Event;
+import model.EventLog;
 import model.League;
 import model.Team;
 import persistence.JsonReader;
@@ -9,6 +11,8 @@ import persistence.JsonWriter;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.List;
@@ -50,6 +54,19 @@ public class FantasyUI extends JFrame {
         setBackground(new Color(243, 23, 23));
         setLocationRelativeTo(null);
         setLayout(new BorderLayout(10, 5));
+
+        //SOURCE: https://stackoverflow.com/questions/60516720/java-how-to-print-message-when-a-jframe-is-closed
+        this.addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+                super.windowClosing(e);
+                EventLog eventLog = EventLog.getInstance();
+                for (Event event : eventLog) {
+                    System.out.println(event.toString() + "\n");
+                }
+                System.exit(0);
+            }
+        });
     }
 
     // initializes UI
@@ -204,7 +221,7 @@ public class FantasyUI extends JFrame {
     public void updateTotalValueLabel(Team team, JLabel totalValueLabel) {
 
         double totalValue = team.calculateTotalCost();
-        System.out.println("Updating total value: " + totalValue);
+//        System.out.println("Updating total value: " + totalValue);
         totalValue = Math.round(totalValue * 10.0) / 10.0; // Round to one decimal place
         totalValueLabel.setText("Total Team Value: $" + String.format("%.1f", totalValue) + "m");
     }
@@ -305,7 +322,7 @@ public class FantasyUI extends JFrame {
             if (component instanceof JLabel) {
                 JLabel driverLabel = (JLabel) component;
                 if (driverLabel.getText().contains(driver.getName())) {
-                    System.out.println("Team: " + team.getName());
+//                    System.out.println("Team: " + team.getName());
                     driversListPanel.remove(driverLabel);
                     team.removeDriver(driver);
                     updateTotalValueLabel(team, tvLabel);
