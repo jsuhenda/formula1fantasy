@@ -27,6 +27,7 @@ but I like to think of this personal project as baby steps to who knows? perhaps
 - As a user, I want to be able to view my current team value (in millions $)
 - As a user, I want to have the option to save the drivers I added to a team
 - As a user, I want to have the option to load my saved teams and drivers
+- 
 
 Phase 4: Task 2 - Sample of event log
 
@@ -75,5 +76,13 @@ Successfully added Fernando Alonso to Team 2
 Thu Nov 30 14:26:44 PST 2023
 Removed Fernando Alonso
 
-
 Process finished with exit code 0
+
+Phase 4: Task 3
+
+If given more time to work on the project, I think there are several areas that could use some refctoring and improvement. 
+One possible refactoring could be implementing a more streamlined communication between the UI components and the data model.
+Currently, the FantasyUI class handles a significant amount of logic, including UI setup, event handling, and intercations with the
+League, Team, and Driver classes. I think I would like to refactor my code by using a design model that improves 
+code readability and maintainability by reducing coupling. The design would involve separating the data and logic from the UI,
+as well as the event handling. This change would also facilitate easier modifications or extensions in the future.

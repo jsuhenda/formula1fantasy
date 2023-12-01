@@ -18,7 +18,7 @@ public class FantasyApp {
     private League league;
     private JsonWriter jsonWriter;
     private JsonReader jsonReader;
-    private List<Team> teams;
+
 
     // EFFECTS : constructs the fantasy and runs application
     public FantasyApp() throws FileNotFoundException {
@@ -33,9 +33,6 @@ public class FantasyApp {
     // EFFECTS
     @SuppressWarnings("methodlength")
     public void runFantasy() {
-//        leagues = new ArrayList<>();
-        teams = league.getTeams();
-
         while (true) {
             displayMenu();
 
