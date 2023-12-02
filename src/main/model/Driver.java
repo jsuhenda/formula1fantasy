@@ -3,8 +3,6 @@ package model;
 import org.json.JSONObject;
 import persistence.Writable;
 
-import java.util.List;
-
 // The class driver represents the drivers in a team. Drivers have a price to recruit to the team.
 // The driver's value is in millions of dollars.
 public class Driver implements Writable {
@@ -44,14 +42,6 @@ public class Driver implements Writable {
 
     public double getValue() {
         return value;
-    }
-
-    public List<Driver> returnDriverList() {
-        // List the drivers using constants
-        Driver[] allDrivers = {
-                d1, d2, d3, d4, d5, d6, d7, d8, d9, d10, d11, d12, d13, d14, d15, d16, d17, d18, d19, d20
-        };
-        return List.of(allDrivers);
     }
 
     // EFFECTS: returns a string representation of a driver's name and its value in millions ($)
