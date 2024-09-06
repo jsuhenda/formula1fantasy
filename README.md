@@ -80,9 +80,9 @@ Process finished with exit code 0
 
 Phase 4: Task 3
 
-If given more time to work on the project, I think there are several areas that could use some refctoring and improvement. 
+If given more time to work on the project, I think several areas could use some refactoring and improvement. 
 One possible refactoring could be implementing a more streamlined communication between the UI components and the data model.
-Currently, the FantasyUI class handles a significant amount of logic, including UI setup, event handling, and intercations with the
-League, Team, and Driver classes. I think I would like to refactor my code by using a design model that improves 
+Currently, the FantasyUI class handles a significant amount of logic, including UI setup, event handling, and interactions with the
+League, Team, and Driver classes. I want to refactor my code by using a design model that improves 
 code readability and maintainability by reducing coupling. The design would involve separating the data and logic from the UI,
 as well as the event handling. This change would also facilitate easier modifications or extensions in the future.
