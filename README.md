@@ -86,3 +86,4 @@ Currently, the FantasyUI class handles a significant amount of logic, including 
 League, Team, and Driver classes. I want to refactor my code by using a design model that improves 
 code readability and maintainability by reducing coupling. The design would involve separating the data and logic from the UI,
 as well as the event handling. This change would also facilitate easier modifications or extensions in the future.
+ 
